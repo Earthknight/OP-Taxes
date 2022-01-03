@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import '../helpers/common_code.dart';
 import '../helpers/db_helper.dart';
+import 'dart:math';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List _taxes = [];
 
   Widget getTaxCard(
     double devicewidth,
@@ -108,34 +116,30 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  Future<void> fetchAndSetTaxes() async {
+    final dataList = await DBHelper.getData();
+    setState(() {
+      _taxes = dataList
+          .map((tax) => {
+                'tax_name': tax['name'],
+                'country': tax['country'],
+                'color':
+                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
+              })
+          .toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // DBHelper.insert();
+    fetchAndSetTaxes();
+  }
+
   @override
   Widget build(BuildContext context) {
-    DBHelper.insert();
-
     final deviceSize = CommonCode.getDeviceSize(context);
-
-    final mostSearchTaxesList = [
-      {
-        'tax_name': 'Income Tax',
-        'country': 'India',
-        'color': Colors.lightGreen.shade300,
-      },
-      {
-        'tax_name': 'GST',
-        'country': 'India',
-        'color': Colors.red.shade100,
-      },
-      {
-        'tax_name': 'Wealth Tax',
-        'country': 'Japan',
-        'color': Colors.lightBlue.shade300,
-      },
-      {
-        'tax_name': 'Services Tax',
-        'country': 'UAE',
-        'color': Colors.pink.shade100,
-      },
-    ];
 
     final searchWidget = Card(
       margin: const EdgeInsets.symmetric(
@@ -215,11 +219,11 @@ class HomeScreen extends StatelessWidget {
                     Colors.purple.shade400,
                   ),
                   getTaxTypeIcons(
-                    'Corporate Tax',
+                    'Co-orperate Tax',
                     Colors.lightGreen.shade200,
                   ),
                   getTaxTypeIcons(
-                    'VAT',
+                    'Business Tax',
                     Colors.yellow.shade200,
                   ),
                 ],
@@ -243,14 +247,14 @@ class HomeScreen extends StatelessWidget {
                 width: deviceSize.width,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: mostSearchTaxesList.length,
+                  itemCount: _taxes.length,
                   itemBuilder: (ctx, index) {
                     return getTaxCard(
                       deviceSize.width,
                       deviceSize.height,
-                      mostSearchTaxesList[index]['country'].toString(),
-                      mostSearchTaxesList[index]['tax_name'].toString(),
-                      mostSearchTaxesList[index]['color'] as Color,
+                      _taxes[index]['country'].toString(),
+                      _taxes[index]['tax_name'].toString(),
+                      _taxes[index]['color'] as Color,
                     );
                   },
                 ),

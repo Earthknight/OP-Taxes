@@ -66,6 +66,24 @@ class DBHelper {
       }
     } else {
       print('NOT EMPTY');
+      // await sqlDB.insert(
+      //   'taxes',
+      //   {
+      //     'id': 5,
+      //     'name': 'VAT',
+      //     'country': 'UAE',
+      //     'defination':
+      //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      //     'example':
+      //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      //   },
+      //   conflictAlgorithm: sql.ConflictAlgorithm.replace,
+      // );
     }
+  }
+
+  static Future<List<Map<String, dynamic>>> getData() async {
+    final sqlDB = await DBHelper.database();
+    return sqlDB.query('taxes');
   }
 }
