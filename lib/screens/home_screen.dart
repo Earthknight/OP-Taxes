@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/common_code.dart';
+import '../helpers/db_helper.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -109,6 +110,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DBHelper.insert();
+
     final deviceSize = CommonCode.getDeviceSize(context);
 
     final mostSearchTaxesList = [
