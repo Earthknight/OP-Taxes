@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taxes/screens/select_country_screen.dart';
+import 'package:taxes/screens/tax_list_screen.dart';
 
 
 class DrawerScreen extends StatelessWidget {
@@ -76,6 +77,11 @@ Widget DrawerWidget(BuildContext context){
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).push(
+                        MaterialPageRoute(builder: (context) => TaxType()),
+                      );
+                    }
                 ),
                 ListTile(
                     title: Text("Taxes Acc To Country",
