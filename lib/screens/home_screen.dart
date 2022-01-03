@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/tax_detail_view.dart';
 import '../helpers/common_code.dart';
 import '../helpers/db_helper.dart';
 import 'dart:math';
@@ -130,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'country': tax['country'],
                 'color':
                     Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                'tax_data': tax,
               })
           .toList();
       _isLoading = false;
@@ -325,12 +327,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               scrollDirection: Axis.horizontal,
                               itemCount: _taxes.length,
                               itemBuilder: (ctx, index) {
-                                return getTaxCard(
-                                  deviceSize.width,
-                                  deviceSize.height,
-                                  _taxes[index]['country'].toString(),
-                                  _taxes[index]['tax_name'].toString(),
-                                  _taxes[index]['color'] as Color,
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (ctx) => TaxDetailView(
+                                          taxData: _taxes[index]['tax_data'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: getTaxCard(
+                                    deviceSize.width,
+                                    deviceSize.height,
+                                    _taxes[index]['country'].toString(),
+                                    _taxes[index]['tax_name'].toString(),
+                                    _taxes[index]['color'] as Color,
+                                  ),
                                 );
                               },
                             ),
