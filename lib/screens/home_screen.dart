@@ -12,6 +12,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List _taxes = [];
+  var _isLoading = false;
+  var _isSearchMode = false;
+  List _searchedTaxes = [];
+
+  final _searchTextController = TextEditingController();
 
   Widget getTaxCard(
     double devicewidth,
@@ -127,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Colors.primaries[Random().nextInt(Colors.primaries.length)],
               })
           .toList();
+      _isLoading = false;
     });
   }
 
@@ -134,7 +140,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // DBHelper.insert();
+    _isLoading = true;
     fetchAndSetTaxes();
+  }
+
+  void searchTaxText() async {
+    final searchResults =
+        await DBHelper.getSearchedTax(_searchTextController.text);
+    setState(() {
+      _isSearchMode = true;
+      _searchedTaxes = searchResults;
+    });
   }
 
   @override
@@ -157,7 +173,8 @@ class _HomeScreenState extends State<HomeScreen> {
           vertical: 2,
         ),
         padding: const EdgeInsets.all(3),
-        child: TextFormField(
+        child: TextField(
+          controller: _searchTextController,
           decoration: const InputDecoration(
             suffixIcon: Icon(
               Icons.search_sharp,
@@ -167,6 +184,19 @@ class _HomeScreenState extends State<HomeScreen> {
             border: InputBorder.none,
           ),
           keyboardType: TextInputType.text,
+          onSubmitted: (value) {
+            if (value.isEmpty) {
+              setState(() {
+                _isSearchMode = false;
+                _searchedTaxes = [];
+              });
+            }
+
+            if (value.isNotEmpty && _searchTextController.text.isNotEmpty) {
+              searchTaxText();
+            }
+          },
+          // textInputAction: TextInputAction.search,
         ),
       ),
     );
@@ -181,88 +211,134 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: deviceSize.height,
-          width: deviceSize.width,
-          child: Column(
-            children: [
-              searchWidget,
-              getSizedBox(
-                deviceSize.height * 0.025,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  getTaxTypeIcons(
-                    'Income Tax',
-                    Colors.green.shade300,
-                  ),
-                  getTaxTypeIcons(
-                    'GST',
-                    Colors.red.shade200,
-                  ),
-                  getTaxTypeIcons(
-                    'Services',
-                    Colors.blue.shade200,
-                  ),
-                ],
-              ),
-              getSizedBox(
-                deviceSize.height * 0.025,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  getTaxTypeIcons(
-                    'Wealth Tax',
-                    Colors.purple.shade400,
-                  ),
-                  getTaxTypeIcons(
-                    'Co-orperate Tax',
-                    Colors.lightGreen.shade200,
-                  ),
-                  getTaxTypeIcons(
-                    'Business Tax',
-                    Colors.yellow.shade200,
-                  ),
-                ],
-              ),
-              getSizedBox(
-                deviceSize.height * 0.025,
-              ),
-              const Text(
-                'Mostly Search',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              getSizedBox(
-                deviceSize.height * 0.025,
-              ),
-              SizedBox(
-                height: deviceSize.height * 0.3,
-                width: deviceSize.width,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _taxes.length,
-                  itemBuilder: (ctx, index) {
-                    return getTaxCard(
-                      deviceSize.width,
-                      deviceSize.height,
-                      _taxes[index]['country'].toString(),
-                      _taxes[index]['tax_name'].toString(),
-                      _taxes[index]['color'] as Color,
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: _isSearchMode
+                  ? Container(
+                      height: deviceSize.height,
+                      width: deviceSize.width,
+                      child: Column(
+                        children: [
+                          searchWidget,
+                          _searchedTaxes.isEmpty
+                              ? const Center(
+                                  child: Text('NO SEARCH RESULTS'),
+                                )
+                              : Expanded(
+                                  child: ListView.builder(
+                                    itemCount: _searchedTaxes.length,
+                                    itemBuilder: (ctx, index) {
+                                      return Card(
+                                        elevation: 5,
+                                        margin: const EdgeInsets.symmetric(
+                                          vertical: 8,
+                                          horizontal: 5,
+                                        ),
+                                        child: ListTile(
+                                          leading: Image.asset(
+                                            'assets/images/tax.png',
+                                            fit: BoxFit.contain,
+                                            height: 40,
+                                          ),
+                                          title: Text(
+                                            _searchedTaxes[index]['name']
+                                                .toString(),
+                                            style: const TextStyle(
+                                              fontSize: 24,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                        ],
+                      ),
+                    )
+                  : Container(
+                      height: deviceSize.height,
+                      width: deviceSize.width,
+                      child: Column(
+                        children: [
+                          searchWidget,
+                          getSizedBox(
+                            deviceSize.height * 0.025,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              getTaxTypeIcons(
+                                'Income Tax',
+                                Colors.green.shade300,
+                              ),
+                              getTaxTypeIcons(
+                                'GST',
+                                Colors.red.shade200,
+                              ),
+                              getTaxTypeIcons(
+                                'Services',
+                                Colors.blue.shade200,
+                              ),
+                            ],
+                          ),
+                          getSizedBox(
+                            deviceSize.height * 0.025,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              getTaxTypeIcons(
+                                'Wealth Tax',
+                                Colors.purple.shade400,
+                              ),
+                              getTaxTypeIcons(
+                                'Co-orperate Tax',
+                                Colors.lightGreen.shade200,
+                              ),
+                              getTaxTypeIcons(
+                                'Business Tax',
+                                Colors.yellow.shade200,
+                              ),
+                            ],
+                          ),
+                          getSizedBox(
+                            deviceSize.height * 0.025,
+                          ),
+                          const Text(
+                            'Mostly Search',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 25,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          getSizedBox(
+                            deviceSize.height * 0.025,
+                          ),
+                          SizedBox(
+                            height: deviceSize.height * 0.3,
+                            width: deviceSize.width,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _taxes.length,
+                              itemBuilder: (ctx, index) {
+                                return getTaxCard(
+                                  deviceSize.width,
+                                  deviceSize.height,
+                                  _taxes[index]['country'].toString(),
+                                  _taxes[index]['tax_name'].toString(),
+                                  _taxes[index]['color'] as Color,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+            ),
     );
   }
 }

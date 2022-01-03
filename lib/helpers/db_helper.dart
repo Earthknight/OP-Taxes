@@ -86,4 +86,14 @@ class DBHelper {
     final sqlDB = await DBHelper.database();
     return sqlDB.query('taxes');
   }
+
+  static Future<List<Map<String, dynamic>>> getSearchedTax(
+      String searchText) async {
+    final sqlDB = await DBHelper.database();
+    return sqlDB.query(
+      'taxes',
+      where: 'name = ?',
+      whereArgs: [searchText],
+    );
+  }
 }
