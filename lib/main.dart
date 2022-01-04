@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taxes/screens/drawer.dart';
 import './screens/home_screen.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Taxes OP',
-      home: HomeScreen(),
+      home: DrawerScreen(),
     );
   }
 }
