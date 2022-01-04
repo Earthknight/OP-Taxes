@@ -56,8 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             CustomWidgets.getSizedBox(
-              0.0,
-              deviceHeight * 0.005,
+              height: deviceHeight * 0.005,
             ),
             CustomWidgets.getFittedBox(
               Text(
@@ -68,8 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             CustomWidgets.getSizedBox(
-              0.0,
-              deviceHeight * 0.005,
+              height: deviceHeight * 0.005,
             ),
             Container(
               margin: const EdgeInsets.symmetric(
@@ -97,27 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  // Widget getTaxTypeIcons(String text, Color bgColor) {
-  //   return Column(
-  //     children: [
-  //       CircleAvatar(
-  //         backgroundColor: bgColor,
-  //         child: Image.asset(
-  //           'assets/images/text.png',
-  //           fit: BoxFit.cover,
-  //           height: 40,
-  //         ),
-  //         radius: 40,
-  //       ),
-  //       CustomWidgets.getFittedBox(
-  //         Text(
-  //           text,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Future<void> fetchAndSetTaxes() async {
     final dataList = await DBHelper.getData();
@@ -233,8 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           searchWidget,
                           CustomWidgets.getSizedBox(
-                            0.0,
-                            deviceSize.height * 0.025,
+                            height: deviceSize.height * 0.025,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -260,8 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           CustomWidgets.getSizedBox(
-                            0.0,
-                            deviceSize.height * 0.025,
+                            height: deviceSize.height * 0.025,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -287,8 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           CustomWidgets.getSizedBox(
-                            0.0,
-                            deviceSize.height * 0.025,
+                            height: deviceSize.height * 0.025,
                           ),
                           const Text(
                             'Mostly Search',
@@ -299,16 +273,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             textAlign: TextAlign.left,
                           ),
                           CustomWidgets.getSizedBox(
-                            0.0,
-                            deviceSize.height * 0.025,
+                            height: deviceSize.height * 0.025,
                           ),
-                          SizedBox(
+                          CustomWidgets.getSizedBox(
                             height: deviceSize.height * 0.3,
                             width: deviceSize.width,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _taxes.length,
-                              itemBuilder: (ctx, index) {
+                            child: CustomWidgets.getListViewBuilder(
+                              _taxes.length,
+                              (ctx, index) {
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).push(
@@ -328,6 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 );
                               },
+                              scrollAxis: Axis.horizontal,
                             ),
                           ),
                         ],

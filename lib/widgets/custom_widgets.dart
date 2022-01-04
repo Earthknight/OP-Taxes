@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 
 class CustomWidgets {
+  static Card getCard(
+    Widget child, {
+    EdgeInsetsGeometry? margin,
+    double? elevation,
+    ShapeBorder? shape,
+  }) {
+    return Card(
+      margin: margin,
+      elevation: elevation,
+      shape: shape,
+      child: child,
+    );
+  }
+
   static Card getSearchBar(
     TextEditingController searchTextController,
     Function searchFunction,
     Function remove,
   ) {
-    return Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
-      ),
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Container(
+    return getCard(
+      Container(
         height: 50,
         margin: const EdgeInsets.symmetric(
           horizontal: 25,
@@ -45,17 +51,27 @@ class CustomWidgets {
           // textInputAction: TextInputAction.search,
         ),
       ),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 5,
+      ),
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
     );
   }
 
-  static SizedBox getSizedBox(double? width, double? height) {
-    return height == 0.0
-        ? SizedBox(
-            width: width,
-          )
-        : SizedBox(
-            height: height,
-          );
+  static SizedBox getSizedBox({
+    double? width,
+    double? height,
+    Widget? child,
+  }) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: child,
+    );
   }
 
   static FittedBox getFittedBox(
@@ -103,6 +119,18 @@ class CustomWidgets {
           ),
         ),
       ],
+    );
+  }
+
+  static ListView getListViewBuilder(
+    int itemCount,
+    Widget Function(BuildContext, int) function, {
+    Axis? scrollAxis,
+  }) {
+    return ListView.builder(
+      scrollDirection: scrollAxis as Axis,
+      itemCount: itemCount,
+      itemBuilder: function,
     );
   }
 }
