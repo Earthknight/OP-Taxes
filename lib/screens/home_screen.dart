@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taxes/widgets/custom_widgets.dart';
 import '../screens/tax_detail_view.dart';
 import '../helpers/common_code.dart';
 import '../helpers/db_helper.dart';
@@ -54,18 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            getSizedBox(
+            CustomWidgets.getSizedBox(
+              0.0,
               deviceHeight * 0.005,
             ),
-            FittedBox(
-              child: Text(
+            CustomWidgets.getFittedBox(
+              Text(
                 taxName,
                 style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
             ),
-            getSizedBox(
+            CustomWidgets.getSizedBox(
+              0.0,
               deviceHeight * 0.005,
             ),
             Container(
@@ -75,8 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FittedBox(
-                    child: Text(
+                  CustomWidgets.getFittedBox(
+                    Text(
                       country,
                       style: const TextStyle(
                         fontSize: 15,
@@ -95,32 +98,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget getSizedBox(double height) {
-    return SizedBox(
-      height: height,
-    );
-  }
-
-  Widget getTaxTypeIcons(String text, Color bgColor) {
-    return Column(
-      children: [
-        CircleAvatar(
-          backgroundColor: bgColor,
-          child: Image.asset(
-            'assets/images/text.png',
-            fit: BoxFit.cover,
-            height: 40,
-          ),
-          radius: 40,
-        ),
-        FittedBox(
-          child: Text(
-            text,
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget getTaxTypeIcons(String text, Color bgColor) {
+  //   return Column(
+  //     children: [
+  //       CircleAvatar(
+  //         backgroundColor: bgColor,
+  //         child: Image.asset(
+  //           'assets/images/text.png',
+  //           fit: BoxFit.cover,
+  //           height: 40,
+  //         ),
+  //         radius: 40,
+  //       ),
+  //       CustomWidgets.getFittedBox(
+  //         Text(
+  //           text,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Future<void> fetchAndSetTaxes() async {
     final dataList = await DBHelper.getData();
@@ -155,52 +152,21 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void removeSearch() {
+    setState(() {
+      _isSearchMode = false;
+      _searchedTaxes = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = CommonCode.getDeviceSize(context);
 
-    final searchWidget = Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
-      ),
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Container(
-        height: 50,
-        margin: const EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 2,
-        ),
-        padding: const EdgeInsets.all(3),
-        child: TextField(
-          controller: _searchTextController,
-          decoration: const InputDecoration(
-            suffixIcon: Icon(
-              Icons.search_sharp,
-              color: Colors.black,
-            ),
-            hintText: 'Search',
-            border: InputBorder.none,
-          ),
-          keyboardType: TextInputType.text,
-          onSubmitted: (value) {
-            if (value.isEmpty) {
-              setState(() {
-                _isSearchMode = false;
-                _searchedTaxes = [];
-              });
-            }
-
-            if (value.isNotEmpty && _searchTextController.text.isNotEmpty) {
-              searchTaxText();
-            }
-          },
-          // textInputAction: TextInputAction.search,
-        ),
-      ),
+    final searchWidget = CustomWidgets.getSearchBar(
+      _searchTextController,
+      searchTaxText,
+      removeSearch,
     );
 
     return Scaffold(
@@ -266,47 +232,62 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: [
                           searchWidget,
-                          getSizedBox(
+                          CustomWidgets.getSizedBox(
+                            0.0,
                             deviceSize.height * 0.025,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              getTaxTypeIcons(
-                                'Income Tax',
-                                Colors.green.shade300,
+                              CustomWidgets.getCircularIcons(
+                                40,
+                                text: 'Income Tax',
+                                bgColor: Colors.green.shade300,
+                                image: 'assets/images/text.png',
                               ),
-                              getTaxTypeIcons(
-                                'GST',
-                                Colors.red.shade200,
+                              CustomWidgets.getCircularIcons(
+                                40,
+                                text: 'GST',
+                                bgColor: Colors.red.shade200,
+                                image: 'assets/images/text.png',
                               ),
-                              getTaxTypeIcons(
-                                'Services',
-                                Colors.blue.shade200,
+                              CustomWidgets.getCircularIcons(
+                                40,
+                                text: 'Services',
+                                bgColor: Colors.blue.shade200,
+                                image: 'assets/images/text.png',
                               ),
                             ],
                           ),
-                          getSizedBox(
+                          CustomWidgets.getSizedBox(
+                            0.0,
                             deviceSize.height * 0.025,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              getTaxTypeIcons(
-                                'Wealth Tax',
-                                Colors.purple.shade400,
+                              CustomWidgets.getCircularIcons(
+                                40,
+                                text: 'Wealth Tax',
+                                bgColor: Colors.purple.shade400,
+                                image: 'assets/images/text.png',
                               ),
-                              getTaxTypeIcons(
-                                'Co-orperate Tax',
-                                Colors.lightGreen.shade200,
+                              CustomWidgets.getCircularIcons(
+                                40,
+                                text: 'Co-orperate Tax',
+                                bgColor: Colors.lightGreen.shade200,
+                                image: 'assets/images/text.png',
                               ),
-                              getTaxTypeIcons(
-                                'Business Tax',
-                                Colors.yellow.shade200,
+                              CustomWidgets.getCircularIcons(
+                                40,
+                                text: 'Business Tax',
+                                bgColor: Colors.yellow.shade200,
+                                image: 'assets/images/text.png',
                               ),
                             ],
                           ),
-                          getSizedBox(
+                          CustomWidgets.getSizedBox(
+                            0.0,
                             deviceSize.height * 0.025,
                           ),
                           const Text(
@@ -317,7 +298,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             textAlign: TextAlign.left,
                           ),
-                          getSizedBox(
+                          CustomWidgets.getSizedBox(
+                            0.0,
                             deviceSize.height * 0.025,
                           ),
                           SizedBox(
