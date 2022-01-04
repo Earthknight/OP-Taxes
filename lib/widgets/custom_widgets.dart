@@ -128,8 +128,9 @@ class CustomWidgets {
     Axis? scrollAxis,
   }) {
     return ListView.builder(
-        scrollDirection: scrollAxis as Axis,
-        itemCount: itemCount,
-        itemBuilder: function);
+      scrollDirection: scrollAxis as Axis,
+      itemCount: itemCount,
+      itemBuilder: function,
+    );
   }
 }
