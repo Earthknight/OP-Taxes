@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taxes/modal/que_ans.dart';
-
+import 'package:taxes/helpers/que_ans.dart';
 import 'mytext.dart';
 
 class LongTerm_W {
@@ -9,7 +8,7 @@ class LongTerm_W {
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(left: 10,right:10,top: 15),
       margin: const EdgeInsets.only(left: 10,right: 10),
-      child: MyText(QuesAns().questions, 17, const Color(0xff036D21), '', FontWeight.bold),
+      child: MyText_lalu(QuesAns().questions, 17, const Color(0xff036D21), '', FontWeight.bold),
     );
   }
   Widget LongAnswer(){
@@ -17,7 +16,7 @@ class LongTerm_W {
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(left: 10,right:10,top: 15),
       margin: const EdgeInsets.only(left: 10,right: 10),
-      child: MyText(QuesAns().answers, 16,Colors.black, '', FontWeight.w600)
+      child: MyText_lalu(QuesAns().answers, 16,Colors.black, '', FontWeight.w600)
     );
   }
 }

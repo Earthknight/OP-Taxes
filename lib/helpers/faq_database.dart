@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart'as path;
-import 'package:taxes/que_ans.dart';
+import 'package:taxes/helpers/que_ans.dart';
 
 class DatabaseHelper {
   static Future<sql.Database> database() async {

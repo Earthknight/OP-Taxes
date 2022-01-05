@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:taxes/widgets/clippper.dart';
 import 'package:taxes/widgets/mytext.dart';
-import 'package:taxes/widgets/clipper.dart';
 import 'package:taxes/widgets/fl_widget.dart';
 class TaxDeflong extends StatelessWidget {
   const TaxDeflong({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class TaxDeflong extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 40),
                       child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: MyText("Income Tax", 40, Colors.white, "Georgia",
+                          child: MyText_lalu("Income Tax", 40, Colors.white, "Georgia",
                               FontWeight.bold))),
                 ]),
                 Expanded(

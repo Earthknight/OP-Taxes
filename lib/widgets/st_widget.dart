@@ -1,7 +1,8 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:taxes/custom_widget/mytext.dart';
-import 'package:taxes/modal/que_ans.dart';
+import 'package:taxes/widgets/mytext.dart';
+
+
 
 class ShortTerm_W extends StatelessWidget {
   final String TextH;
@@ -21,8 +22,8 @@ class ShortTerm_W extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: ExpandablePanel(
-        header: MyText(TextH, 17, Color(0xff036D21), '', FontWeight.bold),
-        expanded: MyText(TextE, 17, Colors.black, '', ), collapsed: Text(''),
+        header: MyText_lalu(TextH, 17, Color(0xff036D21), '', FontWeight.bold),
+        expanded: MyText_lalu(TextE, 17, Colors.black, '', ), collapsed: Text(''),
       ),
     );
   }

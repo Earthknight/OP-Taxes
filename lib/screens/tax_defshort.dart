@@ -1,11 +1,9 @@
-import 'dart:math';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:taxes/widgets/clippper.dart';
 import 'package:taxes/widgets/mytext.dart';
 import 'package:taxes/helpers/faq_database.dart';
-import 'package:taxes/widgets/clipper.dart';
 import 'package:taxes/widgets/st_widget.dart';
-import 'navigation_drawer.dart';
+import 'drawer.dart';
 
 class TaxDef extends StatefulWidget {
   const TaxDef({Key? key}) : super(key: key);
@@ -15,7 +13,7 @@ class TaxDef extends StatefulWidget {
 }
 
 class _TaxDefState extends State<TaxDef> {
-  var _isLoading = false;
+  // var _isLoading = false;
   List _trail = [];
 
   @override
@@ -36,7 +34,7 @@ class _TaxDefState extends State<TaxDef> {
   void initState() {
     DatabaseHelper.insert();
     super.initState();
-    _isLoading = true;
+    // _isLoading = true;
     fetchTaxes();
   }
 
@@ -65,7 +63,7 @@ class _TaxDefState extends State<TaxDef> {
                       padding: const EdgeInsets.only(top: 40),
                       child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: MyText("FAQ", 60, Colors.white, "Georgia",
+                          child: MyText_lalu("FAQ", 60, Colors.white, "Georgia",
                               FontWeight.bold))),
                 ]),
                 Expanded(

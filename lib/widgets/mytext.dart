@@ -2,9 +2,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:taxes/modal/value.dart';
 
-Text MyText(var text,[double? fontSize, Color? fontColor = Colors.white, String ?fontFamily = "Georgia", FontWeight ? fontWeight]) {
+
+Text MyText_lalu(var text,[double? fontSize, Color? fontColor = Colors.white, String ?fontFamily = "Georgia", FontWeight ? fontWeight]) {
 
   return Text(
     text.toString(),
