@@ -1,6 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:taxes/widgets/mytext.dart';
+import 'TextWidget.dart';
 
 
 
@@ -22,8 +22,20 @@ class ShortTerm_W extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: ExpandablePanel(
-        header: MyText_lalu(TextH, 17, const Color(0xff036D21), '', FontWeight.bold),
-        expanded: MyText_lalu(TextE, 17, Colors.black, '', ), collapsed: Text(''),
+        header: MyText(
+          text: TextH,
+          fontColor:Color(0xff036D21),
+          fontWeight: FontWeight.bold,
+          size: 6,
+          lines: 2,
+        ),
+        expanded: MyText(
+          text: TextE,
+          fontColor:Colors.black,
+          fontWeight: FontWeight.w500,
+          size: 3,
+          lines: 5,
+        ), collapsed: Text(''),
       ),
     );
   }
