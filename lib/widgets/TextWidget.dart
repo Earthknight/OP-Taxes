@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-
 import 'get_device_size.dart';
 
 class MyText extends StatelessWidget {
@@ -28,16 +28,18 @@ class MyText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = GetDeviceSize.getDeviceSize(context);
+    double fontSize = screenSize.width<=600 ? screenSize.width / 26 : screenSize.width / 38;
+    // double fontSize =fontSize: size + (Main.isPhone ? fontSize : fontSize * 1.6 + 1),;
     return Text(
       text.toString(),
       overflow: lines == 0 ? TextOverflow.visible : TextOverflow.ellipsis,
-      textAlign: textAlign,
+      textAlign: textAlign ?? TextAlign.left,
       maxLines: lines == 0 ? null : lines,
       style: TextStyle(
-          fontSize: size,
-          color: fontColor,
-          fontFamily: fontFamily,
-          fontWeight: fontWeight,
+          fontSize: size == null ? 15.0 :  fontSize + (screenSize.width<=600 ? size : size! * 1.6 + 1)!.toDouble() ,
+          color: fontColor ?? Colors.white,
+          fontFamily: Platform.isAndroid ? "Georgia" : " Sans Francisco",
+          fontWeight: fontWeight ?? FontWeight.normal,
           decoration: TextDecoration.none
       ),
     );

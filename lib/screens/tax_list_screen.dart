@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/clippper.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
-
 import 'drawer.dart';
 
 
@@ -15,8 +14,8 @@ class TaxType extends StatefulWidget{
 class TaxTypeState extends State<TaxType> {
 
   List<String> TaxTypes = ["Income Tax", "Capital Gains" ,"Security \nTransaction \nTax", "Prerequisite Tax",
-  "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
-  "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
+    "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
+    "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
     "Custom Duty", "Excise Duty"];
 
   @override
@@ -46,7 +45,7 @@ class TaxTypeState extends State<TaxType> {
                             ),
                           ),
                           Icon(
-                           Icons.calculate,
+                            Icons.calculate,
                             size: 55.0,
                             color: Colors.white,
                           ),
@@ -59,7 +58,7 @@ class TaxTypeState extends State<TaxType> {
                     child:GridView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        physics: ScrollPhysics(),
+                        physics: const ScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 20.0,
@@ -89,13 +88,14 @@ class TaxTypeState extends State<TaxType> {
         child: Padding(
           padding: const EdgeInsets.only(left:3.0, right: 3.0),
           child: Center(
-            child: MyText(
-              text: gridItemText,
-              fontColor: Colors.black,
-              fontWeight: FontWeight.bold,
-              textAlign: TextAlign.center,
-              size: 20.0,
-            )
+              child: MyText(
+                text: gridItemText,
+                fontColor: Colors.black,
+                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
+                size: 10.0,
+                lines: 3,
+              )
           ),
         ),
       ),

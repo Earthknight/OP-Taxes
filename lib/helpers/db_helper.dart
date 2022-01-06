@@ -96,4 +96,5 @@ class DBHelper {
       whereArgs: [searchText],
     );
   }
+
 }

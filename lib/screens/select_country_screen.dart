@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:taxes/widgets/ImageWidget.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
-
 import 'drawer.dart';
+
 
 class SelectCountry extends StatefulWidget{
   State<StatefulWidget> createState() {
@@ -28,25 +28,25 @@ class SelectCountryState extends State<SelectCountry>{
             getImageAsset('assets/images/img.png', 125.0,125.0),
             MySizedBox(height: 8.0,),
             Center(
-              child: MyText(
-                text: "Please Select Your\n Country",
-                size: 30,
-                fontColor: Colors.black,
-                fontWeight: FontWeight.bold,
-                textAlign: TextAlign.center,
-              )
+                child: MyText(
+                  text: "Please Select Your\n Country",
+                  size: 25,
+                  fontColor: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  textAlign: TextAlign.center,
+                )
             ),
             MySizedBox(height: 8.0,),
             Center(
-              child:  MyText(
-                text:"You can change the Country\n at any time",
-                size: 20,
-                fontColor: Colors.grey,
-                textAlign: TextAlign.center,
-              )
+                child:  MyText(
+                  text:"You can change the Country\n at any time",
+                  size: 10,
+                  fontColor: Colors.grey,
+                  textAlign: TextAlign.center,
+                )
             ),
             MySizedBox(
-              height: 30.0,
+              height: 50.0,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),
