@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'TextWidget.dart';
+
 class MyAppBar extends StatelessWidget {
   final String text;
   final Color? bgColor;
@@ -14,7 +16,7 @@ class MyAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title : Text(text.toString()),
+      title : MyText(text : text.toString(), size: 9.0, fontWeight: FontWeight.bold,),
       backgroundColor: bgColor,
       actions: actions,
     );

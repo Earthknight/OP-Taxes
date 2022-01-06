@@ -6,6 +6,9 @@ import 'drawer.dart';
 
 
 class TaxType extends StatefulWidget{
+  final List<String> taxList;
+
+  const TaxType({Key? key, required this.taxList}) : super(key: key);
   State<StatefulWidget> createState() {
     return TaxTypeState();
   }
@@ -13,10 +16,7 @@ class TaxType extends StatefulWidget{
 
 class TaxTypeState extends State<TaxType> {
 
-  List<String> TaxTypes = ["Income Tax", "Capital Gains" ,"Security \nTransaction \nTax", "Prerequisite Tax",
-    "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
-    "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
-    "Custom Duty", "Excise Duty"];
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +33,23 @@ class TaxTypeState extends State<TaxType> {
                 ),
                 Stack(children: [
                   Clipper(),
-                  Positioned(top: 50, right: 90,
+                  Positioned(top: 50, right: 150,
                       child: Row(
                         children: [
-                          Text(
-                            'Tax Types',
-                            style: TextStyle(
-                              fontSize: 55.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                          MyText(
+                            text: "Taxes",
+                            fontColor: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            size: 25.0,
                           ),
+                          // Text(
+                          //   'Tax Types',
+                          //   style: TextStyle(
+                          //     fontSize: 55.0,
+                          //     fontWeight: FontWeight.bold,
+                          //     color: Colors.white,
+                          //   ),
+                          // ),
                           Icon(
                             Icons.calculate,
                             size: 55.0,
@@ -58,15 +64,15 @@ class TaxTypeState extends State<TaxType> {
                     child:GridView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        physics: const ScrollPhysics(),
+                        physics: ScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 20.0,
                             mainAxisSpacing: 20.0
                         ),
-                        itemCount: TaxTypes.length,
+                        itemCount: taxList.length,
                         itemBuilder: (context, int index) {
-                          return gridItem(TaxTypes[index]);
+                          return gridItem(taxList[index]);
                         }),
                   ),
                 ),
