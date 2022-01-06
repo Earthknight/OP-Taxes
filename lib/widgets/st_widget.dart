@@ -22,7 +22,7 @@ class ShortTerm_W extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: ExpandablePanel(
-        header: MyText_lalu(TextH, 17, Color(0xff036D21), '', FontWeight.bold),
+        header: MyText_lalu(TextH, 17, const Color(0xff036D21), '', FontWeight.bold),
         expanded: MyText_lalu(TextE, 17, Colors.black, '', ), collapsed: Text(''),
       ),
     );

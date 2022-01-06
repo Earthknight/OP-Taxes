@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taxes/screens/select_country_screen.dart';
+import 'package:taxes/screens/tax_defshort.dart';
 import 'package:taxes/screens/tax_list_screen.dart';
 import 'package:taxes/widgets/AppBarWidget.dart';
 import 'package:taxes/widgets/IconWidget.dart';
@@ -108,12 +109,17 @@ Widget DrawerWidget(BuildContext context) {
                     MaterialPageRoute(builder: (context) => SelectCountry()),
                   );
                 }),
-            const MyListTile(
-              title: MyText(
+             MyListTile(
+              title: const MyText(
                 text: "FAQ",
                 fontColor: Color(0xff028A28),
                 fontWeight: FontWeight.bold,
               ),
+                ontap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(builder: (context) => TaxDef()),
+                  );
+                }
             ),
             const Divider(color: Colors.black),
             ListView.builder(

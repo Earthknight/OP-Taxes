@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taxes/screens/tax_deflong.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/clippper.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
@@ -82,29 +83,36 @@ class TaxTypeState extends State<TaxType> {
     );
   }
   Widget gridItem(String gridItemText){
-    return MySizedBox(
-      height: 150.0,
-      width: 150.0,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        elevation: 20,
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.only(left:3.0, right: 3.0),
-          child: Center(
-              child: MyText(
-                text: gridItemText,
-                fontColor: Colors.black,
-                fontWeight: FontWeight.bold,
-                textAlign: TextAlign.center,
-                size: 10.0,
-                lines: 3,
-              )
+    return InkWell(
+      child: MySizedBox(
+        height: 150.0,
+        width: 150.0,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          elevation: 20,
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(left:3.0, right: 3.0),
+            child: Center(
+                child: MyText(
+                  text: gridItemText,
+                  fontColor: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  textAlign: TextAlign.center,
+                  size: 10.0,
+                  lines: 3,
+                )
+            ),
           ),
         ),
       ),
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(builder: (context) => const TaxDeflong()),
+        );
+      },
     );
   }
 }
