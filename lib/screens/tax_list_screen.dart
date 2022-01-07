@@ -73,7 +73,7 @@ class TaxTypeState extends State<TaxType> {
                         ),
                         itemCount: taxList.length,
                         itemBuilder: (context, int index) {
-                          return gridItem(taxList[index]);
+                          return gridItem(taxList[index],index);
                         }),
                   ),
                 ),
@@ -82,7 +82,7 @@ class TaxTypeState extends State<TaxType> {
       ),
     );
   }
-  Widget gridItem(String gridItemText){
+  Widget gridItem(String gridItemText,int index){
     return InkWell(
       child: MySizedBox(
         height: 150.0,
@@ -110,7 +110,7 @@ class TaxTypeState extends State<TaxType> {
       ),
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) => const TaxDeflong()),
+          MaterialPageRoute(builder: (context) =>  TaxDeflong(index)),
         );
       },
     );

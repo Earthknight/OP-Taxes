@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/clippper.dart';
 import 'package:taxes/widgets/fl_widget.dart';
-
 import 'drawer.dart';
 
+// ignore: must_be_immutable
 class TaxDeflong extends StatelessWidget {
-  const TaxDeflong({Key? key}) : super(key: key);
-
+  int index;
+  // ignore: use_key_in_widget_constructors
+  TaxDeflong(this.index);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,18 +20,20 @@ class TaxDeflong extends StatelessWidget {
             child: Column(
               children: [
                 Stack(
-                  children: const [
-                    Clipper(),
+                  children: [
+                    const Clipper(),
                     Padding(
-                      padding: EdgeInsets.only(top: 40,left: 20),
+                      padding: const EdgeInsets.only(top: 40,left: 10),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        // ignore: prefer_const_constructors
-                        child: MyText(
-                          text: "Income Tax",
-                          fontColor: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          size: 20.0,
+                        child: Expanded(
+                          child: MyText(
+                            text: taxList[index],
+                            fontColor: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            size: 18.0,
+                            lines: 20,
+                          ),
                         ),
                       ),
                     ),
