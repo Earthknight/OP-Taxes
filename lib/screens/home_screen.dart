@@ -4,6 +4,7 @@ import '../widgets/custom_circular_icons.dart';
 import '../widgets/custom_widgets.dart';
 import '../widgets/custom_list_view_builder.dart';
 import '../widgets/custom_tax_card.dart';
+import '../widgets/custom_search_bar.dart';
 import '../screens/tax_detail_view.dart';
 import '../helpers/common_code.dart';
 import '../helpers/db_helper.dart';
@@ -68,10 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final deviceSize = CommonCode.getDeviceSize(context);
 
-    final searchWidget = CustomWidgets.getSearchBar(
+    final searchWidget = CustomSearchBar.getSearchBar(
       _searchTextController,
       searchTaxText,
       removeSearch,
+      deviceSize,
     );
 
     return Scaffold(
