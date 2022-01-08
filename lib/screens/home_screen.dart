@@ -147,15 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Taxes OP',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        backgroundColor: Colors.white,
-      ),
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
