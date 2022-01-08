@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:taxes/widgets/custom_widgets.dart';
+import '../widgets/custom_boxes.dart';
+import '../widgets/custom_circular_icons.dart';
+import '../widgets/custom_widgets.dart';
 import '../screens/tax_detail_view.dart';
 import '../helpers/common_code.dart';
 import '../helpers/db_helper.dart';
@@ -55,10 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            CustomWidgets.getSizedBox(
+            CustomBoxes.getSizedBox(
               height: deviceHeight * 0.005,
             ),
-            CustomWidgets.getFittedBox(
+            CustomBoxes.getFittedBox(
               Text(
                 taxName,
                 style: const TextStyle(
@@ -66,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            CustomWidgets.getSizedBox(
+            CustomBoxes.getSizedBox(
               height: deviceHeight * 0.005,
             ),
             Container(
@@ -76,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomWidgets.getFittedBox(
+                  CustomBoxes.getFittedBox(
                     Text(
                       country,
                       style: const TextStyle(
@@ -200,59 +202,59 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: [
                           searchWidget,
-                          CustomWidgets.getSizedBox(
+                          CustomBoxes.getSizedBox(
                             height: deviceSize.height * 0.025,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              CustomWidgets.getCircularIcons(
-                                40,
+                              CustomCircularIcon.getCircularIcon(
+                                40.0,
                                 text: 'Income Tax',
                                 bgColor: Colors.green.shade300,
                                 image: 'assets/images/text.png',
                               ),
-                              CustomWidgets.getCircularIcons(
-                                40,
+                              CustomCircularIcon.getCircularIcon(
+                                40.0,
                                 text: 'GST',
                                 bgColor: Colors.red.shade200,
                                 image: 'assets/images/text.png',
                               ),
-                              CustomWidgets.getCircularIcons(
-                                40,
+                              CustomCircularIcon.getCircularIcon(
+                                40.0,
                                 text: 'Services',
                                 bgColor: Colors.blue.shade200,
                                 image: 'assets/images/text.png',
                               ),
                             ],
                           ),
-                          CustomWidgets.getSizedBox(
+                          CustomBoxes.getSizedBox(
                             height: deviceSize.height * 0.025,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              CustomWidgets.getCircularIcons(
-                                40,
+                              CustomCircularIcon.getCircularIcon(
+                                40.0,
                                 text: 'Wealth Tax',
                                 bgColor: Colors.purple.shade400,
                                 image: 'assets/images/text.png',
                               ),
-                              CustomWidgets.getCircularIcons(
-                                40,
+                              CustomCircularIcon.getCircularIcon(
+                                40.0,
                                 text: 'Co-orperate Tax',
                                 bgColor: Colors.lightGreen.shade200,
                                 image: 'assets/images/text.png',
                               ),
-                              CustomWidgets.getCircularIcons(
-                                40,
+                              CustomCircularIcon.getCircularIcon(
+                                40.0,
                                 text: 'Business Tax',
                                 bgColor: Colors.yellow.shade200,
                                 image: 'assets/images/text.png',
                               ),
                             ],
                           ),
-                          CustomWidgets.getSizedBox(
+                          CustomBoxes.getSizedBox(
                             height: deviceSize.height * 0.025,
                           ),
                           const Text(
@@ -263,10 +265,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             textAlign: TextAlign.left,
                           ),
-                          CustomWidgets.getSizedBox(
+                          CustomBoxes.getSizedBox(
                             height: deviceSize.height * 0.025,
                           ),
-                          CustomWidgets.getSizedBox(
+                          CustomBoxes.getSizedBox(
                             height: deviceSize.height * 0.3,
                             width: deviceSize.width,
                             child: CustomWidgets.getListViewBuilder(
