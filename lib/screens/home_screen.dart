@@ -141,6 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = CommonCode.getDeviceSize(context);
+    print(deviceSize.width);
 
     final searchWidget = CustomWidgets.getSearchBar(
       _searchTextController,
@@ -179,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           leading: Image.asset(
                                             'assets/images/tax.png',
                                             fit: BoxFit.contain,
-                                            height: 40,
+                                            height: deviceSize.width * 0.1,
                                           ),
                                           title: Text(
                                             _searchedTaxes[index]['name']
@@ -209,19 +210,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               CustomCircularIcon.getCircularIcon(
-                                40.0,
+                                deviceSize.width * 0.1,
                                 text: 'Income Tax',
                                 bgColor: Colors.green.shade300,
                                 image: 'assets/images/text.png',
                               ),
                               CustomCircularIcon.getCircularIcon(
-                                40.0,
+                                deviceSize.width * 0.1,
                                 text: 'GST',
                                 bgColor: Colors.red.shade200,
                                 image: 'assets/images/text.png',
                               ),
                               CustomCircularIcon.getCircularIcon(
-                                40.0,
+                                deviceSize.width * 0.1,
                                 text: 'Services',
                                 bgColor: Colors.blue.shade200,
                                 image: 'assets/images/text.png',
@@ -235,19 +236,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               CustomCircularIcon.getCircularIcon(
-                                40.0,
+                                deviceSize.width * 0.1,
                                 text: 'Wealth Tax',
                                 bgColor: Colors.purple.shade400,
                                 image: 'assets/images/text.png',
                               ),
                               CustomCircularIcon.getCircularIcon(
-                                40.0,
+                                deviceSize.width * 0.1,
                                 text: 'Co-orperate Tax',
                                 bgColor: Colors.lightGreen.shade200,
                                 image: 'assets/images/text.png',
                               ),
                               CustomCircularIcon.getCircularIcon(
-                                40.0,
+                                deviceSize.width * 0.1,
                                 text: 'Business Tax',
                                 bgColor: Colors.yellow.shade200,
                                 image: 'assets/images/text.png',
