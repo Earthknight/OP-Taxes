@@ -19,9 +19,9 @@ class CustomTaxCard {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(devicewidth * 0.05),
+                topRight: Radius.circular(devicewidth * 0.05),
               ),
               child: Container(
                 color: bgColor,
@@ -47,7 +47,10 @@ class CustomTaxCard {
               height: deviceHeight * 0.005,
             ),
             Container(
-              margin: CommonCode.setMarginSymmteric(5, 0),
+              margin: CommonCode.setMarginSymmteric(
+                devicewidth * 0.0125,
+                0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -67,10 +70,13 @@ class CustomTaxCard {
             ),
           ],
         ),
-        margin: CommonCode.setMarginSymmteric(10, 5),
+        margin: CommonCode.setMarginSymmteric(
+          devicewidth * 0.025,
+          deviceHeight * 0.0067,
+        ),
         elevation: 5,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(devicewidth * 0.05),
         ),
       ),
     );

@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: deviceSize.height * 0.025,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               CustomCircularIcon.getCircularIcon(
                                 deviceSize.width * 0.1,
@@ -157,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: deviceSize.height * 0.025,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               CustomCircularIcon.getCircularIcon(
                                 deviceSize.width * 0.1,
