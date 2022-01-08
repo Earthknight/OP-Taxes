@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_boxes.dart';
 import '../widgets/custom_circular_icons.dart';
 import '../widgets/custom_widgets.dart';
+import '../widgets/custom_list_view_builder.dart';
+import '../widgets/custom_tax_card.dart';
 import '../screens/tax_detail_view.dart';
 import '../helpers/common_code.dart';
 import '../helpers/db_helper.dart';
@@ -21,82 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List _searchedTaxes = [];
 
   final _searchTextController = TextEditingController();
-
-  Widget getTaxCard(
-    double devicewidth,
-    double deviceHeight,
-    String country,
-    String taxName,
-    Color bgColor,
-  ) {
-    return Container(
-      width: devicewidth * 0.4,
-      child: Card(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
-        ),
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-              child: Container(
-                color: bgColor,
-                width: double.infinity,
-                child: Image.asset(
-                  'assets/images/text.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            CustomBoxes.getSizedBox(
-              height: deviceHeight * 0.005,
-            ),
-            CustomBoxes.getFittedBox(
-              Text(
-                taxName,
-                style: const TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-            ),
-            CustomBoxes.getSizedBox(
-              height: deviceHeight * 0.005,
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 5,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomBoxes.getFittedBox(
-                    Text(
-                      country,
-                      style: const TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                  const Icon(
-                    Icons.book_outlined,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Future<void> fetchAndSetTaxes() async {
     final dataList = await DBHelper.getData();
@@ -141,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = CommonCode.getDeviceSize(context);
-    print(deviceSize.width);
 
     final searchWidget = CustomWidgets.getSearchBar(
       _searchTextController,
@@ -167,15 +92,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text('NO SEARCH RESULTS'),
                                 )
                               : Expanded(
-                                  child: ListView.builder(
-                                    itemCount: _searchedTaxes.length,
-                                    itemBuilder: (ctx, index) {
+                                  child:
+                                      CustomListViewBuilder.getListViewBuilder(
+                                    _searchedTaxes.length,
+                                    (ctx, index) {
                                       return Card(
                                         elevation: 5,
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 8,
-                                          horizontal: 5,
-                                        ),
+                                        margin:
+                                            CommonCode.setMarginSymmteric(8, 5),
                                         child: ListTile(
                                           leading: Image.asset(
                                             'assets/images/tax.png',
@@ -272,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           CustomBoxes.getSizedBox(
                             height: deviceSize.height * 0.3,
                             width: deviceSize.width,
-                            child: CustomWidgets.getListViewBuilder(
+                            child: CustomListViewBuilder.getListViewBuilder(
                               _taxes.length,
                               (ctx, index) {
                                 return GestureDetector(
@@ -285,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     );
                                   },
-                                  child: getTaxCard(
+                                  child: CustomTaxCard.getTaxCard(
                                     deviceSize.width,
                                     deviceSize.height,
                                     _taxes[index]['country'].toString(),
