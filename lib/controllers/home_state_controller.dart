@@ -6,11 +6,11 @@ import '../helpers/db_helper.dart';
 class HomeStateController extends GetxController {
   List taxes = [];
   var isLoading = false;
-  var _isSearchMode = false;
-  List _searchedTaxes = [];
+  var isSearchMode = false;
+  List searchedTaxes = [];
+  final searchTextController = TextEditingController();
 
   Future<void> fetchAndSetTaxes() async {
-    print('CONTROLLER');
     final dataList = await DBHelper.getData();
 
     taxes = dataList
@@ -23,6 +23,22 @@ class HomeStateController extends GetxController {
             })
         .toList();
     isLoading = false;
+    update();
+  }
+
+  void searchTaxText() async {
+    final searchResults =
+        await DBHelper.getSearchedTax(searchTextController.text);
+
+    isSearchMode = true;
+    searchedTaxes = searchResults;
+
+    update();
+  }
+
+  void removeSearch() {
+    isSearchMode = false;
+    searchedTaxes = [];
     update();
   }
 
