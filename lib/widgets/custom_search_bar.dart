@@ -12,7 +12,7 @@ class CustomSearchBar {
     return CustomCard.getCard(
       Container(
         height: deviceSize.height * 0.065, // 0.065
-        margin: CommonCode.setMarginSymmteric(
+        margin: CommonCode.setEgdeInsetsSymmteric(
           deviceSize.width * 0.065, // 0.065
           deviceSize.height * 0.0025, // 0.0025
         ),
@@ -40,7 +40,7 @@ class CustomSearchBar {
           // textInputAction: TextInputAction.search,
         ),
       ),
-      margin: CommonCode.setMarginSymmteric(
+      margin: CommonCode.setEgdeInsetsSymmteric(
         deviceSize.width * 0.0255, // 0.0255
         deviceSize.height * 0.0065, // 0.0065
       ),

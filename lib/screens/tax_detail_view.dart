@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/common_code.dart';
+import '../widgets/custom_boxes.dart';
 
 class TaxDetailView extends StatelessWidget {
   const TaxDetailView({
@@ -29,10 +30,7 @@ class TaxDetailView extends StatelessWidget {
                   height: deviceSize.height * 0.4,
                   width: deviceSize.width,
                   color: Colors.green.shade400,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 15,
-                  ),
+                  padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -42,7 +40,6 @@ class TaxDetailView extends StatelessWidget {
                           fontSize: 35,
                           color: Colors.white,
                         ),
-                        // textAlign: TextAlign.left,
                       ),
                       Text(
                         taxData['country'],
@@ -51,7 +48,7 @@ class TaxDetailView extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      const SizedBox(
+                      CustomBoxes.getSizedBox(
                         height: 10,
                       ),
                       Text(
@@ -65,12 +62,9 @@ class TaxDetailView extends StatelessWidget {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 15,
-                ),
-                child: Text(
+              Padding(
+                padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
+                child: const Text(
                   'Example',
                   style: TextStyle(
                     fontSize: 29,
@@ -79,10 +73,7 @@ class TaxDetailView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 15,
-                ),
+                padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
                 child: Text(
                   taxData['example'],
                   style: const TextStyle(

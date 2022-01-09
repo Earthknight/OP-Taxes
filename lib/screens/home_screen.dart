@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+// CONTROLLERS
 import '../controllers/home_state_controller.dart';
+
+// HELPERS
 import '../helpers/common_code.dart';
+
+// SCREENS
+import '../screens/tax_detail_view.dart';
+
+// WIDGETS
 import '../widgets/custom_boxes.dart';
 import '../widgets/custom_circular_icons.dart';
 import '../widgets/custom_list_view_builder.dart';
 import '../widgets/custom_tax_card.dart';
 import '../widgets/custom_search_bar.dart';
-import '../screens/tax_detail_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,6 +27,8 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<HomeStateController>(
         init: HomeStateController(),
+        // IF FETCHING IS IN PROGRESS THEN SHOW PROGRESS INDICATOR
+        // ELSE THE TAXES DATA & SCREEN
         builder: (value) => value.isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -30,25 +40,30 @@ class HomeScreen extends StatelessWidget {
                         width: deviceSize.width,
                         child: Column(
                           children: [
+                            // CUSTOM SEARCH BAR
                             CustomSearchBar.getSearchBar(
                               value.searchTextController,
                               value.searchTaxText,
                               value.removeSearch,
                               deviceSize,
                             ),
+                            // IF SEARCHED TAXES IS EMPTY MEANS NO TAXES FOUND
+                            // ELSE SHOW THE FOUND TAXES IN RESULTS
                             value.searchedTaxes.isEmpty
                                 ? const Center(
                                     child: Text('NO SEARCH RESULTS'),
                                   )
                                 : Expanded(
+                                    // CUSTOM LIST VIEW BUILDER TO SHOW THE SEARCHED TAX RESULTS
                                     child: CustomListViewBuilder
                                         .getListViewBuilder(
                                       value.searchedTaxes.length,
                                       (ctx, index) {
                                         return Card(
                                           elevation: 5,
-                                          margin: CommonCode.setMarginSymmteric(
-                                              8, 5),
+                                          margin:
+                                              CommonCode.setEgdeInsetsSymmteric(
+                                                  8, 5),
                                           child: ListTile(
                                             leading: Image.asset(
                                               'assets/images/tax.png',
@@ -75,6 +90,7 @@ class HomeScreen extends StatelessWidget {
                         width: deviceSize.width,
                         child: Column(
                           children: [
+                            // CUSTOM SEARCH BAR
                             CustomSearchBar.getSearchBar(
                               value.searchTextController,
                               value.searchTaxText,
@@ -84,6 +100,7 @@ class HomeScreen extends StatelessWidget {
                             CustomBoxes.getSizedBox(
                               height: deviceSize.height * 0.025,
                             ),
+                            // ROW CIRCLE ICONS TAX
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -110,6 +127,7 @@ class HomeScreen extends StatelessWidget {
                             CustomBoxes.getSizedBox(
                               height: deviceSize.height * 0.025,
                             ),
+                            // ROW CIRCLE ICONS TAX
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -150,16 +168,20 @@ class HomeScreen extends StatelessWidget {
                             CustomBoxes.getSizedBox(
                               height: deviceSize.height * 0.3,
                               width: deviceSize.width,
+                              // CUSTOM HORIZONTAL LIST VIEW TO SHOW KIND OF TAXES
                               child: CustomListViewBuilder.getListViewBuilder(
                                 value.taxes.length,
                                 (ctx, index) {
                                   return GestureDetector(
                                     onTap: () {
+                                      // GETX METHOD TO ROUTE TO NEW PAGE
+                                      // I.E. TAX DETAIL VIEW ON TAP
                                       Get.to(() => TaxDetailView(
                                             taxData: value.taxes[index]
                                                 ['tax_data'],
                                           ));
                                     },
+                                    // CUSTOM TAX CARD
                                     child: CustomTaxCard.getTaxCard(
                                       deviceSize.width,
                                       deviceSize.height,

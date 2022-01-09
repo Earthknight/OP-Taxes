@@ -47,7 +47,7 @@ class CustomTaxCard {
               height: deviceHeight * 0.005,
             ),
             Container(
-              margin: CommonCode.setMarginSymmteric(
+              margin: CommonCode.setEgdeInsetsSymmteric(
                 devicewidth * 0.0125,
                 0,
               ),
@@ -70,7 +70,7 @@ class CustomTaxCard {
             ),
           ],
         ),
-        margin: CommonCode.setMarginSymmteric(
+        margin: CommonCode.setEgdeInsetsSymmteric(
           devicewidth * 0.025,
           deviceHeight * 0.0067,
         ),

@@ -4,15 +4,21 @@ import 'package:get/get.dart';
 import '../helpers/db_helper.dart';
 
 class HomeStateController extends GetxController {
+  // VARS FOR MANAGING THE STATE OF HOME SCREEN
   List taxes = [];
   var isLoading = false;
   var isSearchMode = false;
   List searchedTaxes = [];
+
+  // TEXT EDIT CONTROLLER FOR USER SEARCH
   final searchTextController = TextEditingController();
 
+  // METHOD TO FETCH THE KINDS OF TAXES
+  // FROM DB AND SET IT ON HOME SCREEN
   Future<void> fetchAndSetTaxes() async {
     final dataList = await DBHelper.getData();
 
+    // MAPPING OVER THE RECORDS AND SETTING IT TO LIST OF TAXES
     taxes = dataList
         .map((tax) => {
               'tax_name': tax['name'],
@@ -26,7 +32,10 @@ class HomeStateController extends GetxController {
     update();
   }
 
+  // METHOD FOR USER SEARCH
   void searchTaxText() async {
+    // FETCH TAXES FROM DB WHERE THE USER SEARCH MATCHES
+    // AND SHOW THE RESULTS
     final searchResults =
         await DBHelper.getSearchedTax(searchTextController.text);
 
@@ -36,12 +45,14 @@ class HomeStateController extends GetxController {
     update();
   }
 
+  // METHOD TO REMOVE THE SEARCH SCREEN
   void removeSearch() {
     isSearchMode = false;
     searchedTaxes = [];
     update();
   }
 
+  // INIT METHOD
   @override
   void onInit() {
     super.onInit();
