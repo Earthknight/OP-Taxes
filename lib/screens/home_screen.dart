@@ -155,14 +155,10 @@ class HomeScreen extends StatelessWidget {
                                 (ctx, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (ctx) => TaxDetailView(
+                                      Get.to(() => TaxDetailView(
                                             taxData: value.taxes[index]
                                                 ['tax_data'],
-                                          ),
-                                        ),
-                                      );
+                                          ));
                                     },
                                     child: CustomTaxCard.getTaxCard(
                                       deviceSize.width,

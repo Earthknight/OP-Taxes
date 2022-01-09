@@ -6,7 +6,6 @@ class TaxDetailView extends StatelessWidget {
     Key? key,
     this.taxData,
   }) : super(key: key);
-  static const routeName = '/tax-detail-view';
   final taxData;
 
   @override
