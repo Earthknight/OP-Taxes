@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_state_controller.dart';
+import '../helpers/common_code.dart';
 import '../widgets/custom_boxes.dart';
 import '../widgets/custom_circular_icons.dart';
 import '../widgets/custom_list_view_builder.dart';
 import '../widgets/custom_tax_card.dart';
 import '../widgets/custom_search_bar.dart';
 import '../screens/tax_detail_view.dart';
-import '../helpers/common_code.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
