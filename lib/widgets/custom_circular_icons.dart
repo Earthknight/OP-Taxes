@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'custom_boxes.dart';
 import 'custom_circle_avater.dart';
+import '../widgets/TextWidget.dart';
 
 class CustomCircularIcon {
   static Widget getCircularIcon(
@@ -10,6 +11,7 @@ class CustomCircularIcon {
     String image = 'default',
   }) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CustomCircleAvater.getCircleAvatar(
           Image.asset(
@@ -21,8 +23,9 @@ class CustomCircularIcon {
           bgColor,
         ),
         CustomBoxes.getFittedBox(
-          Text(
-            text,
+          MyText(
+            text: text,
+            fontColor: Colors.black,
           ),
         ),
       ],

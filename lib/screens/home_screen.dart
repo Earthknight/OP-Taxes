@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../widgets/TextWidget.dart';
 
 // CONTROLLERS
 import '../controllers/home_state_controller.dart';
@@ -23,6 +24,38 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = CommonCode.getDeviceSize(context);
+    final homeTaxData = [
+      {
+        'tax_name': 'Income Tax',
+        'bg_color': Colors.green.shade300,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'GST',
+        'bg_color': Colors.red.shade200,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'Services',
+        'bg_color': Colors.blue.shade200,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'Wealth Tax',
+        'bg_color': Colors.purple.shade400,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'Co-operate Tax',
+        'bg_color': Colors.lightGreen.shade200,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'Business Tax',
+        'bg_color': Colors.yellow.shade200,
+        'image': 'assets/images/text.png',
+      },
+    ];
 
     return Scaffold(
       body: GetBuilder<HomeStateController>(
@@ -50,8 +83,27 @@ class HomeScreen extends StatelessWidget {
                             // IF SEARCHED TAXES IS EMPTY MEANS NO TAXES FOUND
                             // ELSE SHOW THE FOUND TAXES IN RESULTS
                             value.searchedTaxes.isEmpty
-                                ? const Center(
-                                    child: Text('NO SEARCH RESULTS'),
+                                ? CustomBoxes.getSizedBox(
+                                    height: deviceSize.height * 0.75,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            Icons.not_interested,
+                                            size: 50,
+                                          ),
+                                          MyText(
+                                            text: 'NO SEARCH RESULTS',
+                                            textAlign: TextAlign.center,
+                                            size: 25,
+                                            fontColor: Colors.black,
+                                            lines: 2,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   )
                                 : Expanded(
                                     // CUSTOM LIST VIEW BUILDER TO SHOW THE SEARCHED TAX RESULTS
@@ -70,12 +122,12 @@ class HomeScreen extends StatelessWidget {
                                               fit: BoxFit.contain,
                                               height: deviceSize.width * 0.1,
                                             ),
-                                            title: Text(
-                                              value.searchedTaxes[index]['name']
+                                            title: MyText(
+                                              text: value.searchedTaxes[index]
+                                                      ['name']
                                                   .toString(),
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                              ),
+                                              size: 15,
+                                              fontColor: Colors.black,
                                             ),
                                           ),
                                         );
@@ -100,66 +152,36 @@ class HomeScreen extends StatelessWidget {
                             CustomBoxes.getSizedBox(
                               height: deviceSize.height * 0.025,
                             ),
-                            // ROW CIRCLE ICONS TAX
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                CustomCircularIcon.getCircularIcon(
-                                  deviceSize.width * 0.1,
-                                  text: 'Income Tax',
-                                  bgColor: Colors.green.shade300,
-                                  image: 'assets/images/text.png',
-                                ),
-                                CustomCircularIcon.getCircularIcon(
-                                  deviceSize.width * 0.1,
-                                  text: 'GST',
-                                  bgColor: Colors.red.shade200,
-                                  image: 'assets/images/text.png',
-                                ),
-                                CustomCircularIcon.getCircularIcon(
-                                  deviceSize.width * 0.1,
-                                  text: 'Services',
-                                  bgColor: Colors.blue.shade200,
-                                  image: 'assets/images/text.png',
-                                ),
-                              ],
-                            ),
-                            CustomBoxes.getSizedBox(
-                              height: deviceSize.height * 0.025,
-                            ),
-                            // ROW CIRCLE ICONS TAX
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                CustomCircularIcon.getCircularIcon(
-                                  deviceSize.width * 0.1,
-                                  text: 'Wealth Tax',
-                                  bgColor: Colors.purple.shade400,
-                                  image: 'assets/images/text.png',
-                                ),
-                                CustomCircularIcon.getCircularIcon(
-                                  deviceSize.width * 0.1,
-                                  text: 'Co-orperate Tax',
-                                  bgColor: Colors.lightGreen.shade200,
-                                  image: 'assets/images/text.png',
-                                ),
-                                CustomCircularIcon.getCircularIcon(
-                                  deviceSize.width * 0.1,
-                                  text: 'Business Tax',
-                                  bgColor: Colors.yellow.shade200,
-                                  image: 'assets/images/text.png',
-                                ),
-                              ],
-                            ),
-                            CustomBoxes.getSizedBox(
-                              height: deviceSize.height * 0.025,
-                            ),
-                            const Text(
-                              'Mostly Search',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 25,
+                            Container(
+                              height: deviceSize.height * 0.35,
+                              padding: EdgeInsets.all(12.0),
+                              child: GridView.builder(
+                                itemCount: homeTaxData.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 4.0,
+                                        mainAxisSpacing: 4.0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return CustomCircularIcon.getCircularIcon(
+                                    deviceSize.width * 0.1,
+                                    text: homeTaxData[index]['tax_name']
+                                        .toString(),
+                                    bgColor:
+                                        homeTaxData[index]['bg_color'] as Color,
+                                    image:
+                                        homeTaxData[index]['image'].toString(),
+                                  );
+                                },
                               ),
+                            ),
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.025,
+                            ),
+                            const MyText(
+                              text: 'Mostly Search',
+                              fontColor: Colors.black,
+                              size: 22,
                               textAlign: TextAlign.left,
                             ),
                             CustomBoxes.getSizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/common_code.dart';
+import '../widgets/TextWidget.dart';
 import '../widgets/custom_boxes.dart';
 
 class TaxDetailView extends StatelessWidget {
@@ -34,29 +35,24 @@ class TaxDetailView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        taxData['name'],
-                        style: const TextStyle(
-                          fontSize: 35,
-                          color: Colors.white,
-                        ),
+                      MyText(
+                        text: taxData['name'],
+                        size: 30,
+                        fontColor: Colors.white,
                       ),
-                      Text(
-                        taxData['country'],
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
+                      MyText(
+                        text: taxData['country'],
+                        size: 15,
+                        fontColor: Colors.white,
                       ),
                       CustomBoxes.getSizedBox(
                         height: 10,
                       ),
-                      Text(
-                        taxData['defination'],
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                        ),
+                      MyText(
+                        text: taxData['defination'],
+                        size: 10,
+                        fontColor: Colors.white,
+                        lines: 5,
                       ),
                     ],
                   ),
@@ -64,22 +60,19 @@ class TaxDetailView extends StatelessWidget {
               ),
               Padding(
                 padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
-                child: const Text(
-                  'Example',
-                  style: TextStyle(
-                    fontSize: 29,
-                    color: Colors.black,
-                  ),
+                child: const MyText(
+                  text: 'Example',
+                  size: 25,
+                  fontColor: Colors.black,
                 ),
               ),
               Padding(
                 padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
-                child: Text(
-                  taxData['example'],
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.black,
-                  ),
+                child: MyText(
+                  text: taxData['example'],
+                  size: 10,
+                  fontColor: Colors.black,
+                  lines: 5,
                 ),
               ),
             ],
