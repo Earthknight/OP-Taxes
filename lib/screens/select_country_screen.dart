@@ -8,43 +8,46 @@ import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
 import 'drawer.dart';
 
-class SelectCountry extends StatefulWidget{
+class SelectCountry extends StatefulWidget {
   State<StatefulWidget> createState() {
     return SelectCountryState();
   }
 }
 
-class SelectCountryState extends State<SelectCountry>{
+class SelectCountryState extends State<SelectCountry> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBarWidget(),
       drawer: DrawerWidget(context),
       body: Container(
         child: Column(
           children: [
-            MySizedBox(height: 10.0,),
-            getImageAsset('assets/images/img.png', 125.0,125.0),
-            MySizedBox(height: 8.0,),
+            MySizedBox(
+              height: 10.0,
+            ),
+            getImageAsset('assets/images/img.png', 125.0, 125.0),
+            MySizedBox(
+              height: 8.0,
+            ),
             Center(
                 child: MyText(
-                  text: "Please Select Your\n Country",
-                  size: 22,
-                  fontColor: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  textAlign: TextAlign.center,
-                )
+              text: "Please Select Your\n Country",
+              size: 22,
+              fontColor: Colors.black,
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+            )),
+            MySizedBox(
+              height: 8.0,
             ),
-            MySizedBox(height: 8.0,),
             Center(
-                child:  MyText(
-                  text:"You can change the Country\n at any time",
-                  size: 9,
-                  fontColor: Colors.grey,
-                  textAlign: TextAlign.center,
-                )
-            ),
+                child: MyText(
+              text: "You can change the Country\n at any time",
+              size: 9,
+              fontColor: Colors.grey,
+              textAlign: TextAlign.center,
+            )),
             MySizedBox(
               height: 50.0,
             ),
@@ -64,6 +67,7 @@ class SelectCountryState extends State<SelectCountry>{
       ),
     );
   }
+
   _buildCountryPickerDropdownSoloExpanded() {
     return CountryPickerDropdown(
       underline: Container(
@@ -89,10 +93,3 @@ class SelectCountryState extends State<SelectCountry>{
     );
   }
 }
-
-
-
-
-
-
-

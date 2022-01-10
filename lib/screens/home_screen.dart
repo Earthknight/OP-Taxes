@@ -1,5 +1,8 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taxes/helpers/db_helper.dart';
 import '../widgets/TextWidget.dart';
 
 // CONTROLLERS
@@ -116,18 +119,28 @@ class HomeScreen extends StatelessWidget {
                                           margin:
                                               CommonCode.setEgdeInsetsSymmteric(
                                                   8, 5),
-                                          child: ListTile(
-                                            leading: Image.asset(
-                                              'assets/images/tax.png',
-                                              fit: BoxFit.contain,
-                                              height: deviceSize.width * 0.1,
-                                            ),
-                                            title: MyText(
-                                              text: value.searchedTaxes[index]
-                                                      ['name']
-                                                  .toString(),
-                                              size: 15,
-                                              fontColor: Colors.black,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              DBHelper.getCountriesFromTax(
+                                                      value.searchedTaxes[index]
+                                                          ['name'])
+                                                  .then((value) {
+                                                print(value);
+                                              });
+                                            },
+                                            child: ListTile(
+                                              leading: Image.asset(
+                                                'assets/images/tax.png',
+                                                fit: BoxFit.contain,
+                                                height: deviceSize.width * 0.1,
+                                              ),
+                                              title: MyText(
+                                                text: value.searchedTaxes[index]
+                                                        ['name']
+                                                    .toString(),
+                                                size: 15,
+                                                fontColor: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         );
