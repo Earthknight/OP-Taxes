@@ -6,9 +6,9 @@ import 'drawer.dart';
 
 // ignore: must_be_immutable
 class TaxDeflong extends StatelessWidget {
-  int index;
+  final String title;
   // ignore: use_key_in_widget_constructors
-  TaxDeflong(this.index);
+  TaxDeflong(this.title);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +28,7 @@ class TaxDeflong extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Expanded(
                           child: MyText(
-                            text: taxList[index],
+                            text: title,
                             fontColor: Colors.white,
                             fontWeight: FontWeight.bold,
                             size: 18.0,

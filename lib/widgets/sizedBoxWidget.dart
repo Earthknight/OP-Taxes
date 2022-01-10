@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'get_device_size.dart';
 
 class MySizedBox extends StatelessWidget {
   final double? height;
@@ -13,9 +14,12 @@ class MySizedBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height ?? 0.0,
-      width: width ?? 0.0,
+    final screenSize = GetDeviceSize.getDeviceSize(context);
+    double fontSizeWidth = screenSize.width<=600 ? screenSize.width / 26 : screenSize.width / 38;
+    double fontSizeHeight = screenSize.width<=600 ? screenSize.height / 26 : screenSize.height / 38;
+    return Container(
+      width: width == null ? 0.0 :  fontSizeWidth + (screenSize.width<=600 ? width : width! * 1.6 + 1)!.toDouble() ,
+      height: height == null ? 0.0 :  fontSizeHeight + (screenSize.width<=600 ? height : height! * 1.6 + 1)!.toDouble() ,
       child: child,
     );
   }

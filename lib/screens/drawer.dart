@@ -9,13 +9,11 @@ import 'package:taxes/widgets/ListTileWidget.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
 import 'home_screen.dart';
-
-
-
 List<String> taxList = ["Income Tax", "Capital Gains" ,"Security Transaction Tax", "Prerequisite Tax",
   "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
   "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
   "Custom Duty", "Excise Duty"];
+
 
 class DrawerScreen extends StatelessWidget {
 
@@ -73,9 +71,7 @@ Widget DrawerWidget(BuildContext context) {
                     icon: Icons.account_circle_rounded,
                     size: 60.0,
                   ),
-                  MySizedBox(
-                    height: 20.0,
-                  ),
+                  Spacer(),
                   MyText(
                     text: "Hi, User",
                     textScaleFactor: 1.5,
@@ -94,6 +90,10 @@ Widget DrawerWidget(BuildContext context) {
                   fontWeight: FontWeight.bold,
                 ),
                 ontap: () {
+                  List<String> taxList = ["Income Tax", "Capital Gains" ,"Security Transaction Tax", "Prerequisite Tax",
+                    "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
+                    "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
+                    "Custom Duty", "Excise Duty"];
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(builder: (context) => TaxType(taxList: taxList,)),
                   );
@@ -109,12 +109,12 @@ Widget DrawerWidget(BuildContext context) {
                     MaterialPageRoute(builder: (context) => SelectCountry()),
                   );
                 }),
-             MyListTile(
-              title: const MyText(
-                text: "FAQ",
-                fontColor: Color(0xff028A28),
-                fontWeight: FontWeight.bold,
-              ),
+            MyListTile(
+                title: const MyText(
+                  text: "FAQ",
+                  fontColor: Color(0xff028A28),
+                  fontWeight: FontWeight.bold,
+                ),
                 ontap: () {
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(builder: (context) => TaxDef()),
@@ -129,11 +129,35 @@ Widget DrawerWidget(BuildContext context) {
                 itemCount: taxList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return MyListTile(
-                    title: MyText(
-                      text: taxList[index],
-                      fontColor: Colors.grey,
-                      lines: 0,
-                    ),
+                      title: MyText(
+                        text: taxList[index],
+                        fontColor: Colors.grey,
+                        lines: 0,
+                      ),
+                      ontap: () {
+                        List<String> myCountriesList  = [
+                          "Australia",
+                          "America",
+                          "Afghanistan",
+                          "Dubai",
+                          "France",
+                          "China",
+                          "Nepal",
+                          "New York",
+                          "London",
+                          "Amsterdam",
+                          "Japan",
+                          "India",
+                          "USA",
+                          "Sri Lanka",
+                          "Germany",
+                          "Russia",
+                        ];
+
+                        Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute(builder: (context) => SelectCountry(countriesList: myCountriesList, )),
+                        );
+                      }
                   );
                 })
           ],
