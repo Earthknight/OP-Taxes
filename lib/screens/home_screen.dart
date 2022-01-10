@@ -176,14 +176,26 @@ class HomeScreen extends StatelessWidget {
                                         crossAxisSpacing: 4.0,
                                         mainAxisSpacing: 4.0),
                                 itemBuilder: (BuildContext context, int index) {
-                                  return CustomCircularIcon.getCircularIcon(
-                                    deviceSize.width * 0.1,
-                                    text: homeTaxData[index]['tax_name']
-                                        .toString(),
-                                    bgColor:
-                                        homeTaxData[index]['bg_color'] as Color,
-                                    image:
-                                        homeTaxData[index]['image'].toString(),
+                                  return GestureDetector(
+                                    onTap: () {
+                                      final tax = value.taxes.where((element) =>
+                                          element['tax_name'].toString() ==
+                                          homeTaxData[index]['tax_name']
+                                              .toString());
+
+                                      Get.to(() => TaxDetailView(
+                                            taxData: tax.first['tax_data'],
+                                          ));
+                                    },
+                                    child: CustomCircularIcon.getCircularIcon(
+                                      deviceSize.width * 0.1,
+                                      text: homeTaxData[index]['tax_name']
+                                          .toString(),
+                                      bgColor: homeTaxData[index]['bg_color']
+                                          as Color,
+                                      image: homeTaxData[index]['image']
+                                          .toString(),
+                                    ),
                                   );
                                 },
                               ),
