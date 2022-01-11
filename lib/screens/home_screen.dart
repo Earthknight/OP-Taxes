@@ -151,10 +151,6 @@ class HomeScreen extends StatelessWidget {
                                                       .map((element) => element
                                                           .value['country'])
                                                       .toList();
-                                                  // Get.to(() => SelectCountry(
-                                                  //       countriesList:
-                                                  //           myList.cast<String>(),
-                                                  //     ));
 
                                                   Get.to(
                                                     () => SearchResultTaxType(
@@ -162,6 +158,9 @@ class HomeScreen extends StatelessWidget {
                                                           .searchedTaxes[index]
                                                               ['name']
                                                           .toString(),
+                                                      countriesList:
+                                                          myList.cast<String>(),
+                                                      taxValue: value,
                                                     ),
                                                   );
                                                 });
