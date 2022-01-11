@@ -52,6 +52,12 @@ class HomeStateController extends GetxController {
     update();
   }
 
+  void updateIsSearchMode() {
+    isSearchMode = !isSearchMode;
+    searchTextController.clear();
+    update();
+  }
+
   // INIT METHOD
   @override
   void onInit() {

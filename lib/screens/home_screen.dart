@@ -3,6 +3,8 @@ import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taxes/helpers/db_helper.dart';
+import 'package:taxes/screens/search_result_tax_type_screen.dart';
+import 'package:taxes/screens/select_country_screen.dart';
 import '../widgets/TextWidget.dart';
 
 // CONTROLLERS
@@ -23,6 +25,21 @@ import '../widgets/custom_search_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  WillPopScope getWillPopScope(
+    HomeStateController value,
+    Widget child,
+  ) {
+    return WillPopScope(
+      child: child,
+      onWillPop: () {
+        if (value.isSearchMode) {
+          value.updateIsSearchMode();
+        }
+        return Future.value(false);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,65 +103,88 @@ class HomeScreen extends StatelessWidget {
                             // IF SEARCHED TAXES IS EMPTY MEANS NO TAXES FOUND
                             // ELSE SHOW THE FOUND TAXES IN RESULTS
                             value.searchedTaxes.isEmpty
-                                ? CustomBoxes.getSizedBox(
-                                    height: deviceSize.height * 0.75,
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Icon(
-                                            Icons.not_interested,
-                                            size: 50,
-                                          ),
-                                          MyText(
-                                            text: 'NO SEARCH RESULTS',
-                                            textAlign: TextAlign.center,
-                                            size: 25,
-                                            fontColor: Colors.black,
-                                            lines: 2,
-                                          ),
-                                        ],
+                                ? getWillPopScope(
+                                    value,
+                                    CustomBoxes.getSizedBox(
+                                      height: deviceSize.height * 0.75,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Icon(
+                                              Icons.not_interested,
+                                              size: 50,
+                                            ),
+                                            MyText(
+                                              text: 'NO SEARCH RESULTS',
+                                              textAlign: TextAlign.center,
+                                              size: 25,
+                                              fontColor: Colors.black,
+                                              lines: 2,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   )
                                 : Expanded(
                                     // CUSTOM LIST VIEW BUILDER TO SHOW THE SEARCHED TAX RESULTS
-                                    child: CustomListViewBuilder
-                                        .getListViewBuilder(
-                                      value.searchedTaxes.length,
-                                      (ctx, index) {
-                                        return Card(
-                                          elevation: 5,
-                                          margin:
-                                              CommonCode.setEgdeInsetsSymmteric(
-                                                  8, 5),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              DBHelper.getCountriesFromTax(
-                                                      value.searchedTaxes[index]
-                                                          ['name'])
-                                                  .then((value) {
-                                                print(value);
-                                              });
-                                            },
-                                            child: ListTile(
-                                              leading: Image.asset(
-                                                'assets/images/tax.png',
-                                                fit: BoxFit.contain,
-                                                height: deviceSize.width * 0.1,
-                                              ),
-                                              title: MyText(
-                                                text: value.searchedTaxes[index]
-                                                        ['name']
-                                                    .toString(),
-                                                size: 15,
-                                                fontColor: Colors.black,
+                                    child: getWillPopScope(
+                                      value,
+                                      CustomListViewBuilder.getListViewBuilder(
+                                        value.searchedTaxes.length,
+                                        (ctx, index) {
+                                          return Card(
+                                            elevation: 5,
+                                            margin: CommonCode
+                                                .setEgdeInsetsSymmteric(8, 5),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                DBHelper.getCountriesFromTax(
+                                                        value.searchedTaxes[
+                                                            index]['name'])
+                                                    .then((taxValue) {
+                                                  List myList = taxValue
+                                                      .asMap()
+                                                      .entries
+                                                      .map((element) => element
+                                                          .value['country'])
+                                                      .toList();
+
+                                                  Get.to(
+                                                    () => SearchResultTaxType(
+                                                      searchResult: value
+                                                          .searchedTaxes[index]
+                                                              ['name']
+                                                          .toString(),
+                                                      countriesList:
+                                                          myList.cast<String>(),
+                                                      taxValue: value,
+                                                    ),
+                                                  );
+                                                });
+                                              },
+                                              child: ListTile(
+                                                leading: Image.asset(
+                                                  'assets/images/tax.png',
+                                                  fit: BoxFit.contain,
+                                                  height:
+                                                      deviceSize.width * 0.1,
+                                                ),
+                                                title: MyText(
+                                                  text: value
+                                                      .searchedTaxes[index]
+                                                          ['name']
+                                                      .toString(),
+                                                  size: 15,
+                                                  fontColor: Colors.black,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                           ],
