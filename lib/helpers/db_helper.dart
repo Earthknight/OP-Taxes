@@ -16,6 +16,7 @@ class DBHelper {
   static Future<void> insert() async {
     final sqlDB = await DBHelper.database();
     List<Map<String, Object?>> records = await sqlDB.query('taxes');
+    print(records);
     if (records.isEmpty) {
       print('IS EMPTY');
 
@@ -97,4 +98,13 @@ class DBHelper {
     );
   }
 
+  static Future<List> getCountriesFromTax(String taxName) async {
+    final sqlDB = await DBHelper.database();
+    return sqlDB.query(
+      'taxes',
+      columns: ['country'],
+      where: 'name = ?',
+      whereArgs: [taxName],
+    );
+  }
 }

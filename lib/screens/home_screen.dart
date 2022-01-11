@@ -1,303 +1,251 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
-import 'package:taxes/widgets/custom_widgets.dart';
-import '../screens/tax_detail_view.dart';
+import 'package:get/get.dart';
+import 'package:taxes/helpers/db_helper.dart';
+import '../widgets/TextWidget.dart';
+
+// CONTROLLERS
+import '../controllers/home_state_controller.dart';
+
+// HELPERS
 import '../helpers/common_code.dart';
-import '../helpers/db_helper.dart';
-import 'dart:math';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+// SCREENS
+import '../screens/tax_detail_view.dart';
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+// WIDGETS
+import '../widgets/custom_boxes.dart';
+import '../widgets/custom_circular_icons.dart';
+import '../widgets/custom_list_view_builder.dart';
+import '../widgets/custom_tax_card.dart';
+import '../widgets/custom_search_bar.dart';
 
-class _HomeScreenState extends State<HomeScreen> {
-  List _taxes = [];
-  var _isLoading = false;
-  var _isSearchMode = false;
-  List _searchedTaxes = [];
-
-  final _searchTextController = TextEditingController();
-
-  Widget getTaxCard(
-    double devicewidth,
-    double deviceHeight,
-    String country,
-    String taxName,
-    Color bgColor,
-  ) {
-    return Container(
-      width: devicewidth * 0.4,
-      child: Card(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
-        ),
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-              child: Container(
-                color: bgColor,
-                width: double.infinity,
-                child: Image.asset(
-                  'assets/images/text.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            CustomWidgets.getSizedBox(
-              height: deviceHeight * 0.005,
-            ),
-            CustomWidgets.getFittedBox(
-              Text(
-                taxName,
-                style: const TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-            ),
-            CustomWidgets.getSizedBox(
-              height: deviceHeight * 0.005,
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 5,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomWidgets.getFittedBox(
-                    Text(
-                      country,
-                      style: const TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                  const Icon(
-                    Icons.book_outlined,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> fetchAndSetTaxes() async {
-    final dataList = await DBHelper.getData();
-    setState(() {
-      _taxes = dataList
-          .map((tax) => {
-                'tax_name': tax['name'],
-                'country': tax['country'],
-                'color':
-                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                'tax_data': tax,
-              })
-          .toList();
-      _isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // DBHelper.insert();
-    _isLoading = true;
-    fetchAndSetTaxes();
-  }
-
-  void searchTaxText() async {
-    final searchResults =
-        await DBHelper.getSearchedTax(_searchTextController.text);
-    setState(() {
-      _isSearchMode = true;
-      _searchedTaxes = searchResults;
-    });
-  }
-
-  void removeSearch() {
-    setState(() {
-      _isSearchMode = false;
-      _searchedTaxes = [];
-    });
-  }
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = CommonCode.getDeviceSize(context);
-
-    final searchWidget = CustomWidgets.getSearchBar(
-      _searchTextController,
-      searchTaxText,
-      removeSearch,
-    );
+    final homeTaxData = [
+      {
+        'tax_name': 'Income Tax',
+        'bg_color': Colors.green.shade300,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'GST',
+        'bg_color': Colors.red.shade200,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'Services',
+        'bg_color': Colors.blue.shade200,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'Wealth Tax',
+        'bg_color': Colors.purple.shade400,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'Co-operate Tax',
+        'bg_color': Colors.lightGreen.shade200,
+        'image': 'assets/images/text.png',
+      },
+      {
+        'tax_name': 'Business Tax',
+        'bg_color': Colors.yellow.shade200,
+        'image': 'assets/images/text.png',
+      },
+    ];
 
     return Scaffold(
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: _isSearchMode
-                  ? Container(
-                      height: deviceSize.height,
-                      width: deviceSize.width,
-                      child: Column(
-                        children: [
-                          searchWidget,
-                          _searchedTaxes.isEmpty
-                              ? const Center(
-                                  child: Text('NO SEARCH RESULTS'),
-                                )
-                              : Expanded(
-                                  child: ListView.builder(
-                                    itemCount: _searchedTaxes.length,
-                                    itemBuilder: (ctx, index) {
-                                      return Card(
-                                        elevation: 5,
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 8,
-                                          horizontal: 5,
-                                        ),
-                                        child: ListTile(
-                                          leading: Image.asset(
-                                            'assets/images/tax.png',
-                                            fit: BoxFit.contain,
-                                            height: 40,
+      body: GetBuilder<HomeStateController>(
+        init: HomeStateController(),
+        // IF FETCHING IS IN PROGRESS THEN SHOW PROGRESS INDICATOR
+        // ELSE THE TAXES DATA & SCREEN
+        builder: (value) => value.isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: value.isSearchMode
+                    ? Container(
+                        height: deviceSize.height,
+                        width: deviceSize.width,
+                        child: Column(
+                          children: [
+                            // CUSTOM SEARCH BAR
+                            CustomSearchBar.getSearchBar(
+                              value.searchTextController,
+                              value.searchTaxText,
+                              value.removeSearch,
+                              deviceSize,
+                            ),
+                            // IF SEARCHED TAXES IS EMPTY MEANS NO TAXES FOUND
+                            // ELSE SHOW THE FOUND TAXES IN RESULTS
+                            value.searchedTaxes.isEmpty
+                                ? CustomBoxes.getSizedBox(
+                                    height: deviceSize.height * 0.75,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            Icons.not_interested,
+                                            size: 50,
                                           ),
-                                          title: Text(
-                                            _searchedTaxes[index]['name']
-                                                .toString(),
-                                            style: const TextStyle(
-                                              fontSize: 24,
+                                          MyText(
+                                            text: 'NO SEARCH RESULTS',
+                                            textAlign: TextAlign.center,
+                                            size: 25,
+                                            fontColor: Colors.black,
+                                            lines: 2,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Expanded(
+                                    // CUSTOM LIST VIEW BUILDER TO SHOW THE SEARCHED TAX RESULTS
+                                    child: CustomListViewBuilder
+                                        .getListViewBuilder(
+                                      value.searchedTaxes.length,
+                                      (ctx, index) {
+                                        return Card(
+                                          elevation: 5,
+                                          margin:
+                                              CommonCode.setEgdeInsetsSymmteric(
+                                                  8, 5),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              DBHelper.getCountriesFromTax(
+                                                      value.searchedTaxes[index]
+                                                          ['name'])
+                                                  .then((value) {
+                                                print(value);
+                                              });
+                                            },
+                                            child: ListTile(
+                                              leading: Image.asset(
+                                                'assets/images/tax.png',
+                                                fit: BoxFit.contain,
+                                                height: deviceSize.width * 0.1,
+                                              ),
+                                              title: MyText(
+                                                text: value.searchedTaxes[index]
+                                                        ['name']
+                                                    .toString(),
+                                                size: 15,
+                                                fontColor: Colors.black,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      },
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: deviceSize.height,
+                        width: deviceSize.width,
+                        child: Column(
+                          children: [
+                            // CUSTOM SEARCH BAR
+                            CustomSearchBar.getSearchBar(
+                              value.searchTextController,
+                              value.searchTaxText,
+                              value.removeSearch,
+                              deviceSize,
+                            ),
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.025,
+                            ),
+                            Container(
+                              height: deviceSize.height * 0.35,
+                              padding: EdgeInsets.all(12.0),
+                              child: GridView.builder(
+                                itemCount: homeTaxData.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 4.0,
+                                        mainAxisSpacing: 4.0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      final tax = value.taxes.where((element) =>
+                                          element['tax_name'].toString() ==
+                                          homeTaxData[index]['tax_name']
+                                              .toString());
+
+                                      Get.to(() => TaxDetailView(
+                                            taxData: tax.first['tax_data'],
+                                          ));
                                     },
-                                  ),
-                                ),
-                        ],
-                      ),
-                    )
-                  : Container(
-                      height: deviceSize.height,
-                      width: deviceSize.width,
-                      child: Column(
-                        children: [
-                          searchWidget,
-                          CustomWidgets.getSizedBox(
-                            height: deviceSize.height * 0.025,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CustomWidgets.getCircularIcons(
-                                40,
-                                text: 'Income Tax',
-                                bgColor: Colors.green.shade300,
-                                image: 'assets/images/text.png',
+                                    child: CustomCircularIcon.getCircularIcon(
+                                      deviceSize.width * 0.1,
+                                      text: homeTaxData[index]['tax_name']
+                                          .toString(),
+                                      bgColor: homeTaxData[index]['bg_color']
+                                          as Color,
+                                      image: homeTaxData[index]['image']
+                                          .toString(),
+                                    ),
+                                  );
+                                },
                               ),
-                              CustomWidgets.getCircularIcons(
-                                40,
-                                text: 'GST',
-                                bgColor: Colors.red.shade200,
-                                image: 'assets/images/text.png',
-                              ),
-                              CustomWidgets.getCircularIcons(
-                                40,
-                                text: 'Services',
-                                bgColor: Colors.blue.shade200,
-                                image: 'assets/images/text.png',
-                              ),
-                            ],
-                          ),
-                          CustomWidgets.getSizedBox(
-                            height: deviceSize.height * 0.025,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CustomWidgets.getCircularIcons(
-                                40,
-                                text: 'Wealth Tax',
-                                bgColor: Colors.purple.shade400,
-                                image: 'assets/images/text.png',
-                              ),
-                              CustomWidgets.getCircularIcons(
-                                40,
-                                text: 'Co-orperate Tax',
-                                bgColor: Colors.lightGreen.shade200,
-                                image: 'assets/images/text.png',
-                              ),
-                              CustomWidgets.getCircularIcons(
-                                40,
-                                text: 'Business Tax',
-                                bgColor: Colors.yellow.shade200,
-                                image: 'assets/images/text.png',
-                              ),
-                            ],
-                          ),
-                          CustomWidgets.getSizedBox(
-                            height: deviceSize.height * 0.025,
-                          ),
-                          const Text(
-                            'Mostly Search',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 25,
                             ),
-                            textAlign: TextAlign.left,
-                          ),
-                          CustomWidgets.getSizedBox(
-                            height: deviceSize.height * 0.025,
-                          ),
-                          CustomWidgets.getSizedBox(
-                            height: deviceSize.height * 0.3,
-                            width: deviceSize.width,
-                            child: CustomWidgets.getListViewBuilder(
-                              _taxes.length,
-                              (ctx, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (ctx) => TaxDetailView(
-                                          taxData: _taxes[index]['tax_data'],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: getTaxCard(
-                                    deviceSize.width,
-                                    deviceSize.height,
-                                    _taxes[index]['country'].toString(),
-                                    _taxes[index]['tax_name'].toString(),
-                                    _taxes[index]['color'] as Color,
-                                  ),
-                                );
-                              },
-                              scrollAxis: Axis.horizontal,
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.025,
                             ),
-                          ),
-                        ],
+                            const MyText(
+                              text: 'Mostly Search',
+                              fontColor: Colors.black,
+                              size: 22,
+                              textAlign: TextAlign.left,
+                            ),
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.025,
+                            ),
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.3,
+                              width: deviceSize.width,
+                              // CUSTOM HORIZONTAL LIST VIEW TO SHOW KIND OF TAXES
+                              child: CustomListViewBuilder.getListViewBuilder(
+                                value.taxes.length,
+                                (ctx, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // GETX METHOD TO ROUTE TO NEW PAGE
+                                      // I.E. TAX DETAIL VIEW ON TAP
+                                      Get.to(() => TaxDetailView(
+                                            taxData: value.taxes[index]
+                                                ['tax_data'],
+                                          ));
+                                    },
+                                    // CUSTOM TAX CARD
+                                    child: CustomTaxCard.getTaxCard(
+                                      deviceSize.width,
+                                      deviceSize.height,
+                                      value.taxes[index]['country'].toString(),
+                                      value.taxes[index]['tax_name'].toString(),
+                                      value.taxes[index]['color'] as Color,
+                                    ),
+                                  );
+                                },
+                                scrollAxis: Axis.horizontal,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-            ),
+              ),
+      ),
     );
   }
 }

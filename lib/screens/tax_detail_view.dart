@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import '../helpers/common_code.dart';
+import '../widgets/TextWidget.dart';
+import '../widgets/custom_boxes.dart';
 
 class TaxDetailView extends StatelessWidget {
   const TaxDetailView({
     Key? key,
     this.taxData,
   }) : super(key: key);
-  static const routeName = '/tax-detail-view';
   final taxData;
 
   @override
@@ -30,66 +31,48 @@ class TaxDetailView extends StatelessWidget {
                   height: deviceSize.height * 0.4,
                   width: deviceSize.width,
                   color: Colors.green.shade400,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 15,
-                  ),
+                  padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        taxData['name'],
-                        style: const TextStyle(
-                          fontSize: 35,
-                          color: Colors.white,
-                        ),
-                        // textAlign: TextAlign.left,
+                      MyText(
+                        text: taxData['name'],
+                        size: 30,
+                        fontColor: Colors.white,
                       ),
-                      Text(
-                        taxData['country'],
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
+                      MyText(
+                        text: taxData['country'],
+                        size: 15,
+                        fontColor: Colors.white,
                       ),
-                      const SizedBox(
+                      CustomBoxes.getSizedBox(
                         height: 10,
                       ),
-                      Text(
-                        taxData['defination'],
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                        ),
+                      MyText(
+                        text: taxData['defination'],
+                        size: 10,
+                        fontColor: Colors.white,
+                        lines: 5,
                       ),
                     ],
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 15,
-                ),
-                child: Text(
-                  'Example',
-                  style: TextStyle(
-                    fontSize: 29,
-                    color: Colors.black,
-                  ),
+              Padding(
+                padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
+                child: const MyText(
+                  text: 'Example',
+                  size: 25,
+                  fontColor: Colors.black,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 15,
-                ),
-                child: Text(
-                  taxData['example'],
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.black,
-                  ),
+                padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
+                child: MyText(
+                  text: taxData['example'],
+                  size: 10,
+                  fontColor: Colors.black,
+                  lines: 5,
                 ),
               ),
             ],

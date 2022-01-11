@@ -32,6 +32,7 @@ dependencies:
   sqflite: ^2.0.1
   country_pickers: ^2.0.0
   expandable: ^5.0.1
+  get: ^4.6.1
 
 
   # The following adds the Cupertino Icons font to your application.

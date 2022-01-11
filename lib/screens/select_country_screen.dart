@@ -26,47 +26,53 @@ import 'drawer.dart';
 //   "Russia",
 // ];
 
-class SelectCountry extends StatefulWidget{
+class SelectCountry extends StatefulWidget {
   final List<String>? countriesList;
   final bool showAll;
 
-  const SelectCountry({Key? key, this.countriesList, this.showAll=false}) : super(key: key);
+  const SelectCountry({Key? key, this.countriesList, this.showAll = false})
+      : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return SelectCountryState();
   }
 }
-class SelectCountryState extends State<SelectCountry>{
+
+class SelectCountryState extends State<SelectCountry> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBarWidget(),
       drawer: DrawerWidget(context),
       body: Container(
         child: Column(
           children: [
-            MySizedBox(height: 10.0,),
-            getImageAsset('assets/images/img.png', 125.0,125.0),
-            MySizedBox(height: 1.0,),
+            MySizedBox(
+              height: 10.0,
+            ),
+            getImageAsset('assets/images/img.png', 125.0, 125.0),
+            MySizedBox(
+              height: 1.0,
+            ),
             Center(
                 child: MyText(
-                  text: "Please Select Your\n Country",
-                  size: 22,
-                  fontColor: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  textAlign: TextAlign.center,
-                )
+              text: "Please Select Your\n Country",
+              size: 22,
+              fontColor: Colors.black,
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+            )),
+            MySizedBox(
+              height: 8.0,
             ),
             // MySizedBox(height: 8.0,),
             Center(
-                child:  MyText(
-                  text:"To get the more info about the Tax",
-                  size: 9,
-                  fontColor: Colors.grey,
-                  textAlign: TextAlign.center,
-                )
-            ),
+                child: MyText(
+              text: "To get the more info about the Tax",
+              size: 9,
+              fontColor: Colors.grey,
+              textAlign: TextAlign.center,
+            )),
             MySizedBox(
               height: 20.0,
             ),
@@ -76,7 +82,7 @@ class SelectCountryState extends State<SelectCountry>{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    widget.countriesList==null
+                    widget.countriesList == null
                         ? _buildCountryPickerDropdownSoloExpanded()
                         : countryDropDown((widget.countriesList)!),
                   ],
@@ -89,13 +95,16 @@ class SelectCountryState extends State<SelectCountry>{
     );
   }
 
-  Widget countryDropDown(List<String> countriesList){
-    String? _currentItemSelected= countriesList[0];
+  Widget countryDropDown(List<String> countriesList) {
+    String? _currentItemSelected = countriesList[0];
     return DropdownButton<String>(
       items: countriesList.map((String value) {
         return DropdownMenuItem<String>(
           value: value,
-          child: MyText(text: value, fontColor: Colors.black,),
+          child: MyText(
+            text: value,
+            fontColor: Colors.black,
+          ),
         );
       }).toList(),
       value: _currentItemSelected,
@@ -135,11 +144,3 @@ class SelectCountryState extends State<SelectCountry>{
     );
   }
 }
-
-
-
-
-
-
-
-
