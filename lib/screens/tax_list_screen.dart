@@ -1,27 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:taxes/helpers/faq_database.dart';
+import 'package:taxes/models/que_ans.dart';
 import 'package:taxes/screens/tax_deflong.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/clippper.dart';
-import 'package:taxes/widgets/get_device_size.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
 import 'drawer.dart';
 
-class TaxType extends StatefulWidget{
+class TaxType extends StatefulWidget {
   final List<String> taxList;
 
   const TaxType({Key? key, required this.taxList}) : super(key: key);
-  @override
+
   State<StatefulWidget> createState() {
     return TaxTypeState();
   }
 }
 
 class TaxTypeState extends State<TaxType> {
+  List traillong = [];
+  String showquery = 'longqtrails';
+  var value1 = LongQuesAns().questionText;
+  var value2 = LongQuesAns().answersText;
+  int list = 1;
+
+  @override
+  Future<void> fetchBigTaxes() async {
+    final dataList = await DBProvider.db.getLongData();
+    setState(() {
+      traillong = dataList
+          .map((traillong) => {
+                'id': traillong['id'],
+                'questions': traillong['questions'],
+                'answers': traillong['answers'],
+              })
+          .toList();
+    });
+  }
+
+  @override
+  void initState() {
+    DBProvider.db.insert(showquery, value1, value2);
+    super.initState();
+    fetchBigTaxes();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = GetDeviceSize.getDeviceSize(context);
-    double fontSize = screenSize.width<=600 ? screenSize.width / 26 : screenSize.width / 38;
     return Scaffold(
       appBar: AppBarWidget(),
       drawer: DrawerWidget(context),
@@ -34,17 +59,26 @@ class TaxTypeState extends State<TaxType> {
                   height: 00,
                 ),
                 Stack(children: [
-                  const Clipper(),
-                  Positioned(top: 50, right: screenSize.width*0.5,
+                  Clipper(),
+                  Positioned(
+                      top: 50,
+                      right: 150,
                       child: Row(
-                        children: const [
+                        children: [
                           MyText(
                             text: "Taxes",
                             fontColor: Colors.white,
                             fontWeight: FontWeight.bold,
                             size: 25.0,
                           ),
-
+                          // Text(
+                          //   'Tax Types',
+                          //   style: TextStyle(
+                          //     fontSize: 55.0,
+                          //     fontWeight: FontWeight.bold,
+                          //     color: Colors.white,
+                          //   ),
+                          // ),
                           Icon(
                             Icons.calculate,
                             size: 55.0,
@@ -55,19 +89,18 @@ class TaxTypeState extends State<TaxType> {
                 ]),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child:GridView.builder(
+                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: GridView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        physics: const ScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        physics: ScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 20.0,
-                            mainAxisSpacing: 20.0
-                        ),
-                        itemCount: widget.taxList.length,
+                            mainAxisSpacing: 20.0),
+                        itemCount: taxList.length,
                         itemBuilder: (context, int index) {
-                          return gridItem(widget.taxList[index],index);
+                          return gridItem(taxList[index], index);
                         }),
                   ),
                 ),
@@ -76,7 +109,8 @@ class TaxTypeState extends State<TaxType> {
       ),
     );
   }
-  Widget gridItem(String gridItemText,int index){
+
+  Widget gridItem(String gridItemText, int index) {
     return InkWell(
       child: MySizedBox(
         height: 150.0,
@@ -88,23 +122,22 @@ class TaxTypeState extends State<TaxType> {
           elevation: 20,
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.only(left:3.0, right: 3.0),
+            padding: const EdgeInsets.only(left: 3.0, right: 3.0),
             child: Center(
                 child: MyText(
-                  text: gridItemText,
-                  fontColor: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  textAlign: TextAlign.center,
-                  size: 10.0,
-                  lines: 3,
-                )
-            ),
+              text: gridItemText,
+              fontColor: Colors.black,
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+              size: 10.0,
+              lines: 3,
+            )),
           ),
         ),
       ),
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) =>  TaxDeflong(gridItemText)),
+          MaterialPageRoute(builder: (context) => TaxDeflong(traillong[index]['questions'],traillong[index]['answers'],index)),
         );
       },
     );

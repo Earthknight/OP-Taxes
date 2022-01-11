@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:taxes/helpers/que_ans.dart';
 import 'TextWidget.dart';
 
 class LongTerm_W {
-  Widget LongQuestion(){
+  Widget LongQuestion(String questions){
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(left: 10,right:10,top: 15),
       margin: const EdgeInsets.only(left: 10,right: 10),
       child:  MyText(
-        text: QuesAns().questions,
+        text: questions,
         fontColor:const Color(0xff036D21),
         fontWeight:FontWeight.bold,
         size: 6,
@@ -17,13 +16,13 @@ class LongTerm_W {
       ),
     );
   }
-  Widget LongAnswer(){
+  Widget LongAnswer(String answers){
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(left: 10,right:10,top: 15),
       margin: const EdgeInsets.only(left: 10,right: 10),
       child: MyText(
-        text: QuesAns().answers,
+        text: answers,
         fontColor:Colors.black,
         fontWeight: FontWeight.w500,
         size: 3,
