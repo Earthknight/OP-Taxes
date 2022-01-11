@@ -13,6 +13,7 @@ class TaxdefController extends GetxController{
   @override
   Future<dynamic> fetchFAQTaxes() async {
     await Future.delayed(Duration(seconds: 1));
+    DBProvider.db.insert(showshortquery,valueshort1,valueshort2);
     final dataList = await DBProvider.db.getSmallData();
     trailshort = dataList
         .map((trailshort) => {
@@ -24,6 +25,7 @@ class TaxdefController extends GetxController{
   }
   Future<dynamic> fetchLongTaxes() async {
     await Future.delayed(Duration(seconds: 1));
+    DBProvider.db.insert(showlongquery,valuelong1,valuelong2);
     final dataList = await DBProvider.db.getLongData();
     traillong = dataList
         .map((traillong) => {
@@ -35,8 +37,6 @@ class TaxdefController extends GetxController{
   }
   void onInit() {
     fetchLongTaxes();
-    // DBProvider.db.insert(showlongquery,valuelong1,valuelong2);
-    // DBProvider.db.insert(showshortquery,valueshort1,valueshort2);
     fetchFAQTaxes();
     // fetchLongTaxes();
     super.onInit();
