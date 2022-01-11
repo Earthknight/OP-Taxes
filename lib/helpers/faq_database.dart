@@ -23,8 +23,6 @@ class DBProvider {
       await db.execute('CREATE TABLE faqstrails(id TEXT PRIMARY KEY, questions TEXT, answers TEXT)');
     });
   }
-
-
   insert(String showquery,var  value1,var  value2) async {
     final db = await database;
     var res;

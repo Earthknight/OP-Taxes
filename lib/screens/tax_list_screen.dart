@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:taxes/helpers/faq_database.dart';
-import 'package:taxes/models/que_ans.dart';
 import 'package:taxes/screens/tax_deflong.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/clippper.dart';
@@ -18,33 +16,6 @@ class TaxType extends StatefulWidget {
 }
 
 class TaxTypeState extends State<TaxType> {
-  List traillong = [];
-  String showquery = 'longqtrails';
-  var value1 = LongQuesAns().questionText;
-  var value2 = LongQuesAns().answersText;
-  int list = 1;
-
-  @override
-  Future<void> fetchBigTaxes() async {
-    final dataList = await DBProvider.db.getLongData();
-    setState(() {
-      traillong = dataList
-          .map((traillong) => {
-                'id': traillong['id'],
-                'questions': traillong['questions'],
-                'answers': traillong['answers'],
-              })
-          .toList();
-    });
-  }
-
-  @override
-  void initState() {
-    DBProvider.db.insert(showquery, value1, value2);
-    super.initState();
-    fetchBigTaxes();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +35,7 @@ class TaxTypeState extends State<TaxType> {
                       top: 50,
                       right: 150,
                       child: Row(
-                        children: [
+                        children: const[
                           MyText(
                             text: "Taxes",
                             fontColor: Colors.white,
@@ -137,7 +108,7 @@ class TaxTypeState extends State<TaxType> {
       ),
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) => TaxDeflong(traillong[index]['questions'],traillong[index]['answers'],index)),
+          MaterialPageRoute(builder: (context) => TaxDeflong(index)),
         );
       },
     );

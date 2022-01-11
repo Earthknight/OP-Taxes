@@ -1,45 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:taxes/models/que_ans.dart';
+import 'package:taxes/controllers/taxdef_controller.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/clippper.dart';
-import 'package:taxes/helpers/faq_database.dart';
 import 'package:taxes/widgets/st_widget.dart';
 import 'drawer.dart';
-
-class TaxDef extends StatefulWidget {
-  @override
-  State<TaxDef> createState() => _TaxDefState();
-}
-
-class _TaxDefState extends State<TaxDef> {
-  List _trail = [];
-  String showquery = 'faqstrails';
-  var value1 = ShortQuesAns().questions;
-  var value2 = ShortQuesAns().answers;
-
-  @override
-  Future<void> fetchSmallTaxes() async {
-    final dataList = await DBProvider.db.getSmallData();
-    setState(() {
-      _trail = dataList
-          .map((trail) => {
-                'id': trail['id'],
-                'questions': trail['questions'],
-                'answers': trail['answers'],
-              })
-          .toList();
-    });
-  }
-
-  @override
-  void initState() {
-    DBProvider.db.insert(showquery,value1,value2);
-    super.initState();
-    fetchSmallTaxes();
-  }
-
+import 'package:get/get.dart';
+class TaxDef extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,15 +43,23 @@ class _TaxDefState extends State<TaxDef> {
                   ],
                 ),
                 Expanded(
-                    child: ListView.builder(
-                        itemCount: _trail.length,
-                        itemBuilder: (context, int index) {
-                          return Align(
-                              alignment: Alignment.center,
-                              child: ShortTerm_W(_trail[index]['questions'],
-                                  _trail[index]['answers']));
-                        })
-                    ),
+                    child: GetBuilder<TaxdefController>(
+                        init: TaxdefController(),
+                        builder: (controller) {
+                          controller.onInit();
+                          if(controller.trailshort.isNotEmpty){
+                            return ListView.builder(
+                                itemCount: controller.trailshort.length,
+                                itemBuilder: (context, int index) {
+                                  return Align(
+                                      alignment: Alignment.center,
+                                      child: ShortTerm_W(controller.trailshort[index]['questions'],
+                                          controller.trailshort[index]['answers']));
+                                });
+                          }else{return CircularProgressIndicator();}
+                        }
+                    )
+                ),
               ],
             )),
       ),
