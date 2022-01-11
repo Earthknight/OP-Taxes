@@ -95,6 +95,7 @@ class DBHelper {
       'taxes',
       where: 'name = ?',
       whereArgs: [searchText],
+      // limit: 1,
     );
   }
 
