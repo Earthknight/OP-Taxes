@@ -11,7 +11,7 @@ class TaxdefController extends GetxController{
   var valueshort1 =  ShortQuesAns().questions;
   var valueshort2 = ShortQuesAns().answers;
   @override
-  Future<dynamic> fetchFAQTaxes() async {
+  Future<void> fetchFAQTaxes() async {
     await Future.delayed(Duration(seconds: 1));
     DBProvider.db.insert(showshortquery,valueshort1,valueshort2);
     final dataList = await DBProvider.db.getSmallData();
@@ -21,9 +21,10 @@ class TaxdefController extends GetxController{
       'questions':trailshort['questions'],
       'answers': trailshort['answers'],
     }).toList();
-    return trailshort;
+    update();
   }
-  Future<dynamic> fetchLongTaxes() async {
+
+  Future<void> fetchLongTaxes() async {
     await Future.delayed(Duration(seconds: 1));
     DBProvider.db.insert(showlongquery,valuelong1,valuelong2);
     final dataList = await DBProvider.db.getLongData();
@@ -33,11 +34,15 @@ class TaxdefController extends GetxController{
       'questions': traillong['questions'],
       'answers': traillong['answers'],
     }).toList();
-    return traillong;
+    update();
   }
-  void onInit() {
-    fetchLongTaxes();
-    fetchFAQTaxes();
+
+  @override
+  Future<void> onInit() async{
+    await fetchLongTaxes();
+    await fetchFAQTaxes();
+    await fetchLongTaxes();
+    await fetchFAQTaxes();
     // fetchLongTaxes();
     super.onInit();
     update();

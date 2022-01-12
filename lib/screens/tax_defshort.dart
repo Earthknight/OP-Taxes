@@ -46,8 +46,6 @@ class TaxDef extends StatelessWidget {
                     child: GetBuilder<TaxdefController>(
                         init: TaxdefController(),
                         builder: (controller) {
-                          controller.onInit();
-                          if(controller.trailshort.isNotEmpty){
                             return ListView.builder(
                                 itemCount: controller.trailshort.length,
                                 itemBuilder: (context, int index) {
@@ -56,7 +54,6 @@ class TaxDef extends StatelessWidget {
                                       child: ShortTerm_W(controller.trailshort[index]['questions'],
                                           controller.trailshort[index]['answers']));
                                 });
-                          }else{return CircularProgressIndicator();}
                         }
                     )
                 ),
