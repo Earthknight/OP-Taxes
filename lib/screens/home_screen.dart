@@ -22,6 +22,7 @@ import '../widgets/custom_circular_icons.dart';
 import '../widgets/custom_list_view_builder.dart';
 import '../widgets/custom_tax_card.dart';
 import '../widgets/custom_search_bar.dart';
+import '../widgets/error_alert_box.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -152,17 +153,24 @@ class HomeScreen extends StatelessWidget {
                                                           .value['country'])
                                                       .toList();
 
-                                                  Get.to(
-                                                    () => SearchResultTaxType(
-                                                      searchResult: value
-                                                          .searchedTaxes[index]
-                                                              ['name']
-                                                          .toString(),
-                                                      countriesList:
-                                                          myList.cast<String>(),
-                                                      taxValue: value,
-                                                    ),
-                                                  );
+                                                  try {
+                                                    Get.to(
+                                                      () => SearchResultTaxType(
+                                                        searchResult: value
+                                                            .searchedTaxes[
+                                                                index]['name']
+                                                            .toString(),
+                                                        countriesList: myList
+                                                            .cast<String>(),
+                                                        taxValue: value,
+                                                      ),
+                                                    );
+                                                  } catch (error) {
+                                                    ErrorAlertBox
+                                                        .getErrorAlertBox(
+                                                      error.toString(),
+                                                    );
+                                                  }
                                                 });
                                               },
                                               child: ListTile(
@@ -218,14 +226,26 @@ class HomeScreen extends StatelessWidget {
                                 itemBuilder: (BuildContext context, int index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      final tax = value.taxes.where((element) =>
-                                          element['tax_name'].toString() ==
-                                          homeTaxData[index]['tax_name']
-                                              .toString());
+                                      try {
+                                        final tax = value.taxes.where(
+                                            (element) =>
+                                                element['tax_name']
+                                                    .toString() ==
+                                                homeTaxData[index]['tax_name']
+                                                    .toString());
 
-                                      Get.to(() => TaxDetailView(
-                                            taxData: tax.first['tax_data'],
-                                          ));
+                                        if (tax.isEmpty) {
+                                          throw Exception('An error occured!');
+                                        }
+
+                                        Get.to(() => TaxDetailView(
+                                              taxData: tax.first['tax_data'],
+                                            ));
+                                      } catch (error) {
+                                        ErrorAlertBox.getErrorAlertBox(
+                                          error.toString(),
+                                        );
+                                      }
                                     },
                                     child: CustomCircularIcon.getCircularIcon(
                                       deviceSize.width * 0.1,
@@ -263,10 +283,16 @@ class HomeScreen extends StatelessWidget {
                                     onTap: () {
                                       // GETX METHOD TO ROUTE TO NEW PAGE
                                       // I.E. TAX DETAIL VIEW ON TAP
-                                      Get.to(() => TaxDetailView(
-                                            taxData: value.taxes[index]
-                                                ['tax_data'],
-                                          ));
+                                      try {
+                                        Get.to(() => TaxDetailView(
+                                              taxData: value.taxes[index]
+                                                  ['tax_data'],
+                                            ));
+                                      } catch (error) {
+                                        ErrorAlertBox.getErrorAlertBox(
+                                          error.toString(),
+                                        );
+                                      }
                                     },
                                     // CUSTOM TAX CARD
                                     child: CustomTaxCard.getTaxCard(

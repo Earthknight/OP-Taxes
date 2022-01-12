@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
+import '../widgets/error_alert_box.dart';
+
 class DBHelper {
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
@@ -14,98 +16,126 @@ class DBHelper {
   }
 
   static Future<void> insert() async {
-    final sqlDB = await DBHelper.database();
-    List<Map<String, Object?>> records = await sqlDB.query('taxes');
-    print(records);
-    if (records.isEmpty) {
-      print('IS EMPTY');
+    try {
+      final sqlDB = await DBHelper.database();
+      List<Map<String, Object?>> records = await sqlDB.query('taxes');
 
-      final taxNamesList = [
-        'GST',
-        'Income Tax',
-        'Co-orperate Tax',
-        'Business Tax',
-        'Wealth Tax',
-      ];
+      if (records.isEmpty) {
+        print('IS EMPTY');
 
-      final taxCountryList = [
-        'India',
-        'India',
-        'USA',
-        'Japan',
-        'India',
-      ];
+        final taxNamesList = [
+          'GST',
+          'Income Tax',
+          'Co-orperate Tax',
+          'Business Tax',
+          'Wealth Tax',
+        ];
 
-      final taxDefinationList = [
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      ];
+        final taxCountryList = [
+          'India',
+          'India',
+          'USA',
+          'Japan',
+          'India',
+        ];
 
-      final taxExampleList = [
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      ];
+        final taxDefinationList = [
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        ];
 
-      for (int i = 0; i < taxNamesList.length; i++) {
-        await sqlDB.insert(
-          'taxes',
-          {
-            'id': i,
-            'name': taxNamesList[i],
-            'country': taxCountryList[i],
-            'defination': taxDefinationList[i],
-            'example': taxExampleList[i],
-          },
-          conflictAlgorithm: sql.ConflictAlgorithm.replace,
-        );
+        final taxExampleList = [
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        ];
+
+        for (int i = 0; i < taxNamesList.length; i++) {
+          await sqlDB.insert(
+            'taxes',
+            {
+              'id': i,
+              'name': taxNamesList[i],
+              'country': taxCountryList[i],
+              'defination': taxDefinationList[i],
+              'example': taxExampleList[i],
+            },
+            conflictAlgorithm: sql.ConflictAlgorithm.replace,
+          );
+        }
+      } else {
+        print('NOT EMPTY');
+        // await sqlDB.insert(
+        //   'taxes',
+        //   {
+        //     'id': 5,
+        //     'name': 'VAT',
+        //     'country': 'UAE',
+        //     'defination':
+        //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //     'example':
+        //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //   },
+        //   conflictAlgorithm: sql.ConflictAlgorithm.replace,
+        // );
       }
-    } else {
-      print('NOT EMPTY');
-      // await sqlDB.insert(
-      //   'taxes',
-      //   {
-      //     'id': 5,
-      //     'name': 'VAT',
-      //     'country': 'UAE',
-      //     'defination':
-      //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      //     'example':
-      //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      //   },
-      //   conflictAlgorithm: sql.ConflictAlgorithm.replace,
-      // );
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
     }
   }
 
   static Future<List<Map<String, dynamic>>> getData() async {
-    final sqlDB = await DBHelper.database();
-    return sqlDB.query('taxes');
+    try {
+      final sqlDB = await DBHelper.database();
+      return sqlDB.query('taxes');
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
+    return [];
   }
 
   static Future<List<Map<String, dynamic>>> getSearchedTax(
-      String searchText) async {
-    final sqlDB = await DBHelper.database();
-    return sqlDB.query(
-      'taxes',
-      where: 'name = ?',
-      whereArgs: [searchText],
-      // limit: 1,
-    );
+    String searchText,
+  ) async {
+    try {
+      final sqlDB = await DBHelper.database();
+      return sqlDB.query(
+        'taxes',
+        where: 'name = ?',
+        whereArgs: [searchText],
+        // limit: 1,
+      );
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
+    return [];
   }
 
   static Future<List> getCountriesFromTax(String taxName) async {
-    final sqlDB = await DBHelper.database();
-    return sqlDB.query(
-      'taxes',
-      columns: ['country'],
-      where: 'name = ?',
-      whereArgs: [taxName],
-    );
+    try {
+      final sqlDB = await DBHelper.database();
+      return sqlDB.query(
+        'taxes',
+        columns: ['country'],
+        where: 'name = ?',
+        whereArgs: [taxName],
+      );
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
+    return [];
   }
 }

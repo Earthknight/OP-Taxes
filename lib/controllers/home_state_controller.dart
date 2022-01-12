@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:get/get.dart';
+import '../widgets/error_alert_box.dart';
 import '../helpers/db_helper.dart';
 
 class HomeStateController extends GetxController {
@@ -18,16 +19,20 @@ class HomeStateController extends GetxController {
   Future<void> fetchAndSetTaxes() async {
     final dataList = await DBHelper.getData();
 
-    // MAPPING OVER THE RECORDS AND SETTING IT TO LIST OF TAXES
-    taxes = dataList
-        .map((tax) => {
-              'tax_name': tax['name'],
-              'country': tax['country'],
-              'color':
-                  Colors.primaries[Random().nextInt(Colors.primaries.length)],
-              'tax_data': tax,
-            })
-        .toList();
+    if (dataList.isNotEmpty) {
+      // MAPPING OVER THE RECORDS AND SETTING IT TO LIST OF TAXES
+      taxes = dataList
+          .map((tax) => {
+                'tax_name': tax['name'],
+                'country': tax['country'],
+                'color':
+                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                'tax_data': tax,
+              })
+          .toList();
+    } else {
+      ErrorAlertBox.getErrorAlertBox('Error occred while fetching taxes');
+    }
     isLoading = false;
     update();
   }
