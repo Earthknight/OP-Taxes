@@ -199,24 +199,4 @@ class DBHelper {
     }
     return [];
   }
-
-  static Future<void> showTables() async {
-    final sqlDB = await DBHelper.database();
-    // sqlDB
-    //     .rawQuery('SELECT * FROM ' + CommonCode.MOSTLY_KNOWN_TABLE)
-    //     .then((value) => print(value));
-    sqlDB.query(CommonCode.MOSTLY_KNOWN_TABLE).then((value) => print(value));
-    // sqlDB.rawQuery(
-    //     'CREATE TABLE [IF NOT EXISTS] taxes.mostly_known_taxes(id TEXT PRIMARY KEY, FOREIGN KEY (id) REFERENCES taxes(id))');
-
-    // sqlDB.rawQuery('SELECT id FROM taxes').then((value) => print(value));
-    // sqlDB
-    //     .rawQuery(
-    //         "INSERT INTO mostly_searched_taxes(id) SELECT id FROM taxes WHERE id=4;")
-    //     .then((value) => print(value));
-
-    // sqlDB
-    //     .rawQuery('SELECT * FROM mostly_searched_taxes')
-    //     .then((value) => print(value));
-  }
 }

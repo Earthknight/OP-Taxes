@@ -88,7 +88,6 @@ class HomeStateController extends GetxController {
     super.onInit();
     isLoading = true;
     fetchAndSetTaxes();
-    // DBHelper.driverCode();
     // DBHelper.insert();
   }
 }
