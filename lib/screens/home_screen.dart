@@ -264,7 +264,7 @@ class HomeScreen extends StatelessWidget {
                               height: deviceSize.height * 0.025,
                             ),
                             const MyText(
-                              text: 'Mostly Search',
+                              text: 'All Taxes',
                               fontColor: Colors.black,
                               size: 22,
                               textAlign: TextAlign.left,
