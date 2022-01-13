@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
+
 class DBHelper {
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
@@ -23,9 +24,10 @@ class DBHelper {
       final taxNamesList = [
         'GST',
         'Income Tax',
-        'Co-orperate Tax',
-        'Business Tax',
-        'Wealth Tax',
+        'Cooperate Tax',
+        'Capital Gains',
+        'Property Tax',
+        'Income Tax',
       ];
 
       final taxCountryList = [
@@ -34,6 +36,7 @@ class DBHelper {
         'USA',
         'Japan',
         'India',
+        'UAE'
       ];
 
       final taxDefinationList = [
@@ -42,9 +45,11 @@ class DBHelper {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       ];
 
       final taxExampleList = [
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -98,6 +103,31 @@ class DBHelper {
       // limit: 1,
     );
   }
+  Future<List<String>> getCountriesList(String selectedTax) async {
+    var results =  await getData();
+    print("results: $results");
+    List<String> countries = [];
+    for(int i= 0 ; i< results.length ; i++){
+      if(selectedTax == results[i]["name"].toString()){
+        countries.add(results[i]["country"].toString());
+      }
+    }
+    print(countries);
+    return countries;
+  }
+
+  Future<List<String>> getTaxesList(String selectedCountry) async {
+    var results =  await getData();
+    print("results: $results");
+    List<String> taxes = [];
+    for(int i= 0 ; i< results.length ; i++){
+      if(selectedCountry == results[i]["country"].toString()){
+        taxes.add(results[i]["name"].toString());
+      }
+    }
+    print(taxes);
+    return taxes;
+  }
 
   static Future<List> getCountriesFromTax(String taxName) async {
     final sqlDB = await DBHelper.database();
@@ -109,3 +139,4 @@ class DBHelper {
     );
   }
 }
+
