@@ -3,35 +3,19 @@ import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taxes/helpers/db_helper.dart';
+import 'package:taxes/screens/tax_list_screen.dart';
 import 'package:taxes/widgets/ImageWidget.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
 import 'drawer.dart';
-// List<String> myCountriesList  = [
-//   "Australia",
-//   "America",
-//   "Afghanistan",
-//   "Dubai",
-//   "France",
-//   "China",
-//   "Nepal",
-//   "New York",
-//   "London",
-//   "Amsterdam",
-//   "Japan",
-//   "India",
-//   "USA",
-//   "Sri Lanka",
-//   "Germany",
-//   "Russia",
-// ];
-
 class SelectCountry extends StatefulWidget {
   final List<String>? countriesList;
-  final bool showAll;
+  final bool showNothing;
 
-  const SelectCountry({Key? key, this.countriesList, this.showAll = false})
+  const SelectCountry({Key? key, this.countriesList, this.showNothing = false})
       : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return SelectCountryState();
@@ -45,35 +29,40 @@ class SelectCountryState extends State<SelectCountry> {
       appBar: AppBarWidget(),
       drawer: DrawerWidget(context),
       body: Container(
-        child: Column(
+        child: widget.showNothing == true
+            ? const Center(
+          child: MyText(
+            text: "Nothing to show",
+            fontColor: Colors.black,
+          ),
+        )
+            : Column(
           children: [
-            MySizedBox(
+            const MySizedBox(
               height: 10.0,
             ),
             getImageAsset('assets/images/img.png', 125.0, 125.0),
-            MySizedBox(
+            const MySizedBox(
               height: 1.0,
             ),
-            Center(
-                child: MyText(
-              text: "Please Select Your\n Country",
-              size: 22,
-              fontColor: Colors.black,
-              fontWeight: FontWeight.bold,
-              textAlign: TextAlign.center,
-            )),
-            MySizedBox(
-              height: 8.0,
-            ),
+            const Center(
+                child: const MyText(
+                  text: "Please Select Your\n Country",
+                  size: 22,
+                  fontColor: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  textAlign: TextAlign.center,
+                )),
             // MySizedBox(height: 8.0,),
-            Center(
-                child: MyText(
-              text: "To get the more info about the Tax",
-              size: 9,
-              fontColor: Colors.grey,
-              textAlign: TextAlign.center,
-            )),
-            MySizedBox(
+            const Center(
+                child: const MyText(
+                  text: "To get the more info about the Tax",
+                  size: 9,
+                  fontColor: Colors.grey,
+                  textAlign: TextAlign.center,
+                  lines: 2,
+                )),
+            const MySizedBox(
               height: 20.0,
             ),
             Padding(
@@ -110,6 +99,7 @@ class SelectCountryState extends State<SelectCountry> {
       value: _currentItemSelected,
       onChanged: (newValueSelected) {
         setState(() {
+          moveToTaxScreen(newValueSelected! , context);
           print(" new value : $newValueSelected");
           _currentItemSelected = newValueSelected;
         });
@@ -128,6 +118,7 @@ class SelectCountryState extends State<SelectCountry> {
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       onValuePicked: (Country country) {
         print(country.name);
+        moveToTaxScreen(country.name.toString() , context);
       },
       itemBuilder: (Country country) {
         return Row(
@@ -142,5 +133,18 @@ class SelectCountryState extends State<SelectCountry> {
       itemHeight: null,
       isExpanded: true,
     );
+  }
+  void moveToTaxScreen(String countryName, BuildContext context) async {
+    var myTaxesList =  await DBHelper().getTaxesList(countryName);
+    if(myTaxesList.isNotEmpty){
+      Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: (context) =>  TaxType(taxList: myTaxesList,)),
+      );
+    }
+    else{
+      Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: (context) =>  TaxType(showNothing: true,)),
+      );
+    }
   }
 }
