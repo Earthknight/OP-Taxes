@@ -13,27 +13,33 @@ class TaxdefController extends GetxController{
   @override
   Future<void> fetchFAQTaxes() async {
     await Future.delayed(Duration(seconds: 1));
-    DBProvider.db.insert(showshortquery,valueshort1,valueshort2);
+
     final dataList = await DBProvider.db.getSmallData();
-    trailshort = dataList
+    if(dataList.isEmpty){
+      DBProvider.db.insert(showshortquery,valueshort1,valueshort2);
+    }
+    else{    trailshort = dataList
         .map((trailshort) => {
       'id': trailshort['id'],
       'questions':trailshort['questions'],
       'answers': trailshort['answers'],
-    }).toList();
+    }).toList();}
     update();
   }
 
   Future<void> fetchLongTaxes() async {
     await Future.delayed(Duration(seconds: 1));
-    DBProvider.db.insert(showlongquery,valuelong1,valuelong2);
     final dataList = await DBProvider.db.getLongData();
-    traillong = dataList
+    if(dataList.isEmpty){
+      DBProvider.db.insert(showlongquery,valuelong1,valuelong2);
+    }
+    else{   traillong = dataList
         .map((traillong) => {
       'id': traillong['id'],
       'questions': traillong['questions'],
       'answers': traillong['answers'],
-    }).toList();
+    }).toList();}
+
     update();
   }
 
