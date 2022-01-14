@@ -9,13 +9,7 @@ class TaxDef extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff036D21),
-        title: const Padding(
-          padding: EdgeInsets.only(left: 60),
-          child: Text('0P:Taxes'),
-        ),
-      ),
+      appBar: AppBarWidget(),
       drawer: DrawerWidget(context),
       body: SafeArea(
         child: Container(
