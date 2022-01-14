@@ -323,26 +323,16 @@ class HomeScreen extends StatelessWidget {
                               child: CustomListViewBuilder.getListViewBuilder(
                                 value.mostlySearchedTaxes.length,
                                 (ctx, index) {
-                                  final inst = value.mostlySearchedTaxes[index];
-                                  //     as Future<Map<String, dynamic>>;
-                                  var tax_name = 'tax_name';
-                                  // inst.then((value) {
-                                  //   tax_name = value['name'];
-                                  // });
-
-                                  var country = 'country';
-                                  // inst.then((value) {
-                                  //   country = value['country'];
-                                  // });
-
                                   return GestureDetector(
                                     onTap: () {
                                       // GETX METHOD TO ROUTE TO NEW PAGE
                                       // I.E. TAX DETAIL VIEW ON TAP
                                       try {
                                         Get.to(() => TaxDetailView(
-                                            taxData: value
-                                                .mostlySearchedTaxes[index]));
+                                              taxData:
+                                                  value.mostlySearchedTaxes[
+                                                      index]['tax_data'],
+                                            ));
                                       } catch (error) {
                                         ErrorAlertBox.getErrorAlertBox(
                                           error.toString(),
@@ -353,110 +343,119 @@ class HomeScreen extends StatelessWidget {
                                     child: CustomTaxCard.getTaxCard(
                                       deviceSize.width,
                                       deviceSize.height,
-                                      inst.then((value) {
-                                        return value['country'].toString();
-                                      }).toString(),
-                                      inst.then((value) {
-                                        return value['name'].toString();
-                                      }).toString(),
-                                      Colors.pink,
+                                      value.mostlySearchedTaxes[index]
+                                              ['country']
+                                          .toString(),
+                                      value.mostlySearchedTaxes[index]
+                                              ['tax_name']
+                                          .toString(),
+                                      value.mostlySearchedTaxes[index]['color'],
                                     ),
                                   );
                                 },
                                 scrollAxis: Axis.horizontal,
                               ),
                             ),
-                            // const MyText(
-                            //   text: 'Most Appeared',
-                            //   fontColor: Colors.black,
-                            //   size: 22,
-                            //   textAlign: TextAlign.left,
-                            // ),
-                            // CustomBoxes.getSizedBox(
-                            //   height: deviceSize.height * 0.025,
-                            // ),
-                            // CustomBoxes.getSizedBox(
-                            //   height: deviceSize.height * 0.3,
-                            //   width: deviceSize.width,
-                            //   // CUSTOM HORIZONTAL LIST VIEW TO SHOW KIND OF TAXES
-                            //   child: CustomListViewBuilder.getListViewBuilder(
-                            //     value.mostlyAppearedTaxes.length,
-                            //     (ctx, index) {
-                            //       return GestureDetector(
-                            //         onTap: () {
-                            //           // GETX METHOD TO ROUTE TO NEW PAGE
-                            //           // I.E. TAX DETAIL VIEW ON TAP
-                            //           try {
-                            //             Get.to(() => TaxDetailView(
-                            //                 taxData: value
-                            //                     .mostlyAppearedTaxes[index]));
-                            //           } catch (error) {
-                            //             ErrorAlertBox.getErrorAlertBox(
-                            //               error.toString(),
-                            //             );
-                            //           }
-                            //         },
-                            //         // CUSTOM TAX CARD
-                            //         child: CustomTaxCard.getTaxCard(
-                            //           deviceSize.width,
-                            //           deviceSize.height,
-                            //           value.mostlyAppearedTaxes[index]
-                            //                   ['country']
-                            //               .toString(),
-                            //           value.mostlyAppearedTaxes[index]['name']
-                            //               .toString(),
-                            //           Colors.pink,
-                            //         ),
-                            //       );
-                            //     },
-                            //     scrollAxis: Axis.horizontal,
-                            //   ),
-                            // ),
-                            // const MyText(
-                            //   text: 'Most Known',
-                            //   fontColor: Colors.black,
-                            //   size: 22,
-                            //   textAlign: TextAlign.left,
-                            // ),
-                            // CustomBoxes.getSizedBox(
-                            //   height: deviceSize.height * 0.025,
-                            // ),
-                            // CustomBoxes.getSizedBox(
-                            //   height: deviceSize.height * 0.3,
-                            //   width: deviceSize.width,
-                            //   // CUSTOM HORIZONTAL LIST VIEW TO SHOW KIND OF TAXES
-                            //   child: CustomListViewBuilder.getListViewBuilder(
-                            //     value.mostlyKnownTaxes.length,
-                            //     (ctx, index) {
-                            //       return GestureDetector(
-                            //         onTap: () {
-                            //           // GETX METHOD TO ROUTE TO NEW PAGE
-                            //           // I.E. TAX DETAIL VIEW ON TAP
-                            //           try {
-                            //             Get.to(() => TaxDetailView(
-                            //                 taxData:
-                            //                     value.mostlyKnownTaxes[index]));
-                            //           } catch (error) {
-                            //             ErrorAlertBox.getErrorAlertBox(
-                            //               error.toString(),
-                            //             );
-                            //           }
-                            //         },
-                            //         // CUSTOM TAX CARD
-                            //         child: CustomTaxCard.getTaxCard(
-                            //           deviceSize.width,
-                            //           deviceSize.height,
-                            //           value.mostlyKnownTaxes[index]['country']
-                            //               .toString(),
-                            //           value.mostlyKnownTaxes[index]['name']
-                            //               .toString(),
-                            //           Colors.pink,
-                            //         ),
-                            //       );
-                            //     },
-                            //     scrollAxis: Axis.horizontal,
-                            //   ),
-                            // ),
+                            const MyText(
+                              text: 'Most Appeared',
+                              fontColor: Colors.black,
+                              size: 22,
+                              textAlign: TextAlign.left,
+                            ),
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.025,
+                            ),
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.3,
+                              width: deviceSize.width,
+                              // CUSTOM HORIZONTAL LIST VIEW TO SHOW KIND OF TAXES
+                              child: CustomListViewBuilder.getListViewBuilder(
+                                value.mostlyAppearedTaxes.length,
+                                (ctx, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // GETX METHOD TO ROUTE TO NEW PAGE
+                                      // I.E. TAX DETAIL VIEW ON TAP
+                                      try {
+                                        Get.to(
+                                          () => TaxDetailView(
+                                            taxData:
+                                                value.mostlyAppearedTaxes[index]
+                                                    ['tax_data'],
+                                          ),
+                                        );
+                                      } catch (error) {
+                                        ErrorAlertBox.getErrorAlertBox(
+                                          error.toString(),
+                                        );
+                                      }
+                                    },
+                                    // CUSTOM TAX CARD
+                                    child: CustomTaxCard.getTaxCard(
+                                      deviceSize.width,
+                                      deviceSize.height,
+                                      value.mostlyAppearedTaxes[index]
+                                              ['country']
+                                          .toString(),
+                                      value.mostlyAppearedTaxes[index]
+                                              ['tax_name']
+                                          .toString(),
+                                      value.mostlyAppearedTaxes[index]['color'],
+                                    ),
+                                  );
+                                },
+                                scrollAxis: Axis.horizontal,
+                              ),
+                            ),
+                            const MyText(
+                              text: 'Most Known',
+                              fontColor: Colors.black,
+                              size: 22,
+                              textAlign: TextAlign.left,
+                            ),
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.025,
+                            ),
+                            CustomBoxes.getSizedBox(
+                              height: deviceSize.height * 0.3,
+                              width: deviceSize.width,
+                              // CUSTOM HORIZONTAL LIST VIEW TO SHOW KIND OF TAXES
+                              child: CustomListViewBuilder.getListViewBuilder(
+                                value.mostlyKnownTaxes.length,
+                                (ctx, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // GETX METHOD TO ROUTE TO NEW PAGE
+                                      // I.E. TAX DETAIL VIEW ON TAP
+                                      try {
+                                        Get.to(
+                                          () => TaxDetailView(
+                                            taxData:
+                                                value.mostlyKnownTaxes[index]
+                                                    ['tax_data'],
+                                          ),
+                                        );
+                                      } catch (error) {
+                                        ErrorAlertBox.getErrorAlertBox(
+                                          error.toString(),
+                                        );
+                                      }
+                                    },
+                                    // CUSTOM TAX CARD
+                                    child: CustomTaxCard.getTaxCard(
+                                      deviceSize.width,
+                                      deviceSize.height,
+                                      value.mostlyKnownTaxes[index]['country']
+                                          .toString(),
+                                      value.mostlyKnownTaxes[index]['tax_name']
+                                          .toString(),
+                                      value.mostlyKnownTaxes[index]['color'],
+                                    ),
+                                  );
+                                },
+                                scrollAxis: Axis.horizontal,
+                              ),
+                            ),
                           ],
                         ),
                       ),
