@@ -157,11 +157,13 @@ class DBHelper {
     return [];
   }
 
-  static Future<List<Map<String, dynamic>>> getTaxFromID(
+  static Future<Map<String, dynamic>> getTaxFromID(
     String taxID,
   ) async {
     final sqlDB = await DBHelper.database();
-    return sqlDB.query('taxes', where: 'id = ?', whereArgs: [taxID]);
+    return sqlDB
+        .query('taxes', where: 'id = ?', whereArgs: [taxID], limit: 1)
+        .then((value) => value[0]);
   }
 
   static Future<List<Map<String, dynamic>>> getSearchedTax(

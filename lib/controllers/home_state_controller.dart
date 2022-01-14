@@ -45,13 +45,31 @@ class HomeStateController extends GetxController {
     }
 
     if (mostSearchedTaxesDataList.isNotEmpty) {
-      print(mostSearchedTaxesDataList);
-      mostlySearchedTaxes =
-          mostlySearchedTaxes.map((tax) => print(tax['id'])).toList();
-    } else {
-      print('EMPTY HAI');
-      print(mostlySearchedTaxes);
+      mostlySearchedTaxes = mostSearchedTaxesDataList
+          .map(
+            (map) async => await DBHelper.getTaxFromID(map['id']),
+          )
+          .toList();
     }
+
+    print(mostlySearchedTaxes);
+
+    if (mostAppearedTaxesDataList.isNotEmpty) {
+      mostlyAppearedTaxes = mostAppearedTaxesDataList
+          .map(
+            (map) => DBHelper.getTaxFromID(map['id']),
+          )
+          .toList();
+    }
+
+    if (mostKnownTaxesDataList.isNotEmpty) {
+      mostlyKnownTaxes = mostKnownTaxesDataList
+          .map(
+            (map) => DBHelper.getTaxFromID(map['id']),
+          )
+          .toList();
+    }
+
     isLoading = false;
     update();
   }
