@@ -6,10 +6,12 @@ import 'package:taxes/widgets/get_device_size.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
 import 'drawer.dart';
 
-class TaxType extends StatefulWidget{
-  final List<String> taxList;
 
-  const TaxType({Key? key, required this.taxList}) : super(key: key);
+class TaxType extends StatefulWidget{
+  final List<String>? taxList;
+  bool showNothing;
+
+  TaxType({Key? key,  this.taxList,  this.showNothing = false}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return TaxTypeState();
@@ -26,7 +28,16 @@ class TaxTypeState extends State<TaxType> {
       appBar: AppBarWidget(),
       drawer: DrawerWidget(context),
       body: SafeArea(
-        child: Container(
+        child: widget.showNothing == true
+            ? Container(
+          child: Center(
+            child: MyText(
+              text: "Nothing to show",
+              fontColor: Colors.black,
+            ),
+          ),
+        )
+            : Container(
             color: Colors.white,
             child: Column(
               children: [
@@ -65,9 +76,9 @@ class TaxTypeState extends State<TaxType> {
                             crossAxisSpacing: 20.0,
                             mainAxisSpacing: 20.0
                         ),
-                        itemCount: widget.taxList.length,
+                        itemCount: widget.taxList?.length,
                         itemBuilder: (context, int index) {
-                          return gridItem(widget.taxList[index],index);
+                          return gridItem(widget.taxList![index],index);
                         }),
                   ),
                 ),
@@ -104,7 +115,7 @@ class TaxTypeState extends State<TaxType> {
       ),
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) =>  TaxDeflong(gridItemText)),
+          MaterialPageRoute(builder: (context) =>  TaxDeflong(index)),
         );
       },
     );

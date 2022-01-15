@@ -185,6 +185,32 @@ class DBHelper {
     return [];
   }
 
+  Future<List<String>> getCountriesList(String selectedTax) async {
+    var results = await getData('taxes');
+    print("results: $results");
+    List<String> countries = [];
+    for (int i = 0; i < results.length; i++) {
+      if (selectedTax == results[i]["name"].toString()) {
+        countries.add(results[i]["country"].toString());
+      }
+    }
+    print(countries);
+    return countries;
+  }
+
+  Future<List<String>> getTaxesList(String selectedCountry) async {
+    var results = await getData('taxes');
+    print("results: $results");
+    List<String> taxes = [];
+    for (int i = 0; i < results.length; i++) {
+      if (selectedCountry == results[i]["country"].toString()) {
+        taxes.add(results[i]["name"].toString());
+      }
+    }
+    print(taxes);
+    return taxes;
+  }
+
   static Future<List> getCountriesFromTax(String taxName) async {
     try {
       final sqlDB = await DBHelper.database();

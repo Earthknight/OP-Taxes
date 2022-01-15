@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taxes/helpers/db_helper.dart';
 import 'package:taxes/screens/select_country_screen.dart';
 import 'package:taxes/screens/tax_defshort.dart';
 import 'package:taxes/screens/tax_list_screen.dart';
@@ -9,43 +10,58 @@ import 'package:taxes/widgets/ListTileWidget.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
 import 'home_screen.dart';
+
 List<String> taxList = ["Income Tax", "Capital Gains" ,"Security Transaction Tax", "Prerequisite Tax",
   "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
   "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
   "Custom Duty", "Excise Duty"];
 
+class DrawerScreen extends StatefulWidget{
+  const DrawerScreen({Key? key}) : super(key: key);
 
-class DrawerScreen extends StatelessWidget {
 
+  @override
+  State<StatefulWidget> createState() {
+    return DrawerScreenState();
+  }
+}
+class DrawerScreenState extends State<DrawerScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDatabase();
+  }
+  Future<void> fetchDatabase() async {
+    await DBHelper.insert();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(),
       drawer: DrawerWidget(context),
-      body: Container(
-        child: HomeScreen(),
-      ),
+      body: HomeScreen(),
     );
   }
 }
 
 PreferredSizeWidget AppBarWidget() {
   return PreferredSize(
-    preferredSize: Size.fromHeight(60),
+    preferredSize: const Size.fromHeight(60),
     child: MyAppBar(
       text: "OP Taxes",
       actions: [
-        MySizedBox(
+        const MySizedBox(
           width: 5.0,
         ),
         MyIcon(
           icon: Icons.account_circle_rounded,
         ),
-        MySizedBox(
+        const MySizedBox(
           width: 5.0,
         ),
       ],
-      bgColor: Color(0xff03541A),
+      bgColor: const Color(0xff03541A),
     ),
   );
 }
@@ -56,12 +72,12 @@ Widget DrawerWidget(BuildContext context) {
       child: SingleChildScrollView(
         child: ListView(
           shrinkWrap: true,
-          physics: ScrollPhysics(),
+          physics: const ScrollPhysics(),
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xff028A28),
               ),
               child: Column(
@@ -71,8 +87,8 @@ Widget DrawerWidget(BuildContext context) {
                     icon: Icons.account_circle_rounded,
                     size: 60.0,
                   ),
-                  Spacer(),
-                  MyText(
+                  const Spacer(),
+                  const MyText(
                     text: "Hi, User",
                     textScaleFactor: 1.5,
                     size: 17.0,
@@ -90,13 +106,7 @@ Widget DrawerWidget(BuildContext context) {
                   fontWeight: FontWeight.bold,
                 ),
                 ontap: () {
-                  List<String> taxList = ["Income Tax", "Capital Gains" ,"Security Transaction Tax", "Prerequisite Tax",
-                    "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
-                    "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
-                    "Custom Duty", "Excise Duty"];
-                  Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(builder: (context) => TaxType(taxList: taxList,)),
-                  );
+                  moveToTaxTypeScreen(context);
                 }),
             MyListTile(
                 title: const MyText(
@@ -105,9 +115,7 @@ Widget DrawerWidget(BuildContext context) {
                   fontWeight: FontWeight.bold,
                 ),
                 ontap: () {
-                  Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(builder: (context) => SelectCountry()),
-                  );
+                  moveToSelectCountryScreen(null, context);
                 }),
             MyListTile(
                 title: const MyText(
@@ -125,7 +133,7 @@ Widget DrawerWidget(BuildContext context) {
             ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 itemCount: taxList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return MyListTile(
@@ -134,29 +142,8 @@ Widget DrawerWidget(BuildContext context) {
                         fontColor: Colors.grey,
                         lines: 0,
                       ),
-                      ontap: () {
-                        List<String> myCountriesList  = [
-                          "Australia",
-                          "America",
-                          "Afghanistan",
-                          "Dubai",
-                          "France",
-                          "China",
-                          "Nepal",
-                          "New York",
-                          "London",
-                          "Amsterdam",
-                          "Japan",
-                          "India",
-                          "USA",
-                          "Sri Lanka",
-                          "Germany",
-                          "Russia",
-                        ];
-
-                        Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(builder: (context) => SelectCountry(countriesList: myCountriesList, )),
-                        );
+                      ontap: () async {
+                        moveToSelectCountryScreen(taxList[index], context);
                       }
                   );
                 })
@@ -164,3 +151,35 @@ Widget DrawerWidget(BuildContext context) {
         ),
       ));
 }
+
+void moveToTaxTypeScreen(BuildContext context) {
+  List<String> taxList = ["Income Tax", "Capital Gains" ,"Security Transaction Tax", "Prerequisite Tax",
+    "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
+    "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
+    "Custom Duty", "Excise Duty"];
+  Navigator.of(context, rootNavigator: true).push(
+    MaterialPageRoute(builder: (context) => TaxType(taxList: taxList,)),
+  );
+}
+void moveToSelectCountryScreen(String? taxName, BuildContext context) async{
+
+  if(taxName == null){
+    Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute(builder: (context) => const SelectCountry()),
+    );
+  }
+  else{
+    var  myCountriesList =  await DBHelper().getCountriesList(taxName);
+    if(myCountriesList.isNotEmpty){
+      Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: (context) =>  SelectCountry(countriesList: myCountriesList,)),
+      );
+    }
+    else{
+      Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: (context) =>  const SelectCountry(showNothing: true,)),
+      );
+    }
+  }
+}
+
