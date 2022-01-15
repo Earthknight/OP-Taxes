@@ -15,10 +15,15 @@ import 'drawer.dart';
 
 
 class TaxType extends StatefulWidget {
+  /// VARIABLES
   final List<String>? taxList;
   bool showNothing;
   bool showDetailWithCountry;
   String? country;
+
+  //IF showNothing IS TRUE THEN IT WILL SHOW "NOTHING TO SHOW" IN CENTER
+  //IF showDetailWithCountry IS TRUE AND country IS NOT NULL THEN IT WILL NAVIGATE TO TAX DETAIL SCREEN
+  //OTHERWISE IT WILL NAVIGATE TO LONG DEFINITION SCREEN
 
   TaxType(
       {Key? key,
@@ -129,18 +134,19 @@ class TaxTypeState extends State<TaxType> {
           ),
         ),
         onTap: () async {
+          /// IF showDetailWithCountry IS TRUE THEN IT WILL NAVIGATE TO TAX DETAIL SCREEN
+          /// OTHERWISE IT WILL SHOW TAX LONG DEFINITION SCREEN
           if (widget.showDetailWithCountry == true) {
             moveToTaxDetailScreen(gridItemText, widget.country!);
           }
           else {
             Get.to(() => TaxDeflong(index));
-            // Navigator.of(context, rootNavigator: true).push(
-            //   MaterialPageRoute(builder: (context) => TaxDeflong(index)),
-            // );
           }
         });
   }
 }
+
+/// TO GET THE MAP OF THE TAX
 Map<String, dynamic> getTaxMap(Map<String, dynamic> map) {
   return {
     'tax_name': map['name'],
@@ -149,6 +155,8 @@ Map<String, dynamic> getTaxMap(Map<String, dynamic> map) {
     'tax_data': map,
   };
 }
+
+/// FUNCTION TO NAVIGATE TO THE TA DETAIL SCREEN
 void goToTaxDetailScreen(Map<String, dynamic> tax) {
   try {
     Get.to(() => TaxDetailView(
@@ -160,6 +168,8 @@ void goToTaxDetailScreen(Map<String, dynamic> tax) {
     );
   }
 }
+
+/// FUNCTION TO DO REQUIRED OPERATIONS FOR THE NAVIGATION TO TAX DETAIL SCREEN
 void moveToTaxDetailScreen(String TaxName, String countryName)async {
   var data = await DBHelper.getTaxDetails(TaxName, countryName);
   // print("calling data : $data");

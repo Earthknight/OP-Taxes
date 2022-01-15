@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   final taxdefController = Get.put(TaxdefController());
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       title: 'Taxes OP',
       home: DrawerScreen(),
     );

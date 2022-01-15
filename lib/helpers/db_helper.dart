@@ -233,6 +233,8 @@ class DBHelper {
     return [];
   }
 
+  /// FUNCTION TO GET THE LIST OF COUNTRIES FROM TAX
+  // BT SELECTING TAX FROM DRAWER
   Future<List<String>> getCountriesList(String selectedTax) async {
     try {
       var results = await getData('taxes');
@@ -253,6 +255,8 @@ class DBHelper {
     return [];
   }
 
+  /// FUNCTION TO GET THE LIST OF TAXES FROM COUNTRY
+  // BY SELECTING COUNTRY FROM DROPDOWN
   Future<List<String>> getTaxesList(String selectedCountry) async {
     try {
       var results = await getData('taxes');
@@ -294,6 +298,7 @@ class DBHelper {
     return [];
   }
 
+  /// FUNCTION TO GET THE DETAILS OF THE TAX FROM ITS NAME AND COUNTRY
   static Future<List<Map<String, dynamic>>> getTaxDetails(
       String taxName , String countryName
       ) async {

@@ -48,6 +48,7 @@ class DrawerScreenState extends State<DrawerScreen> {
   }
 }
 
+/// FUCTION TO GET THE APP BAR
 PreferredSizeWidget AppBarWidget() {
   return PreferredSize(
     preferredSize: const Size.fromHeight(60),
@@ -74,6 +75,7 @@ PreferredSizeWidget AppBarWidget() {
   );
 }
 
+///FUNCTION TO GET THE DRAWER
 Widget DrawerWidget(BuildContext context) {
 
   return Drawer(
@@ -160,23 +162,19 @@ Widget DrawerWidget(BuildContext context) {
       ));
 }
 
+/// FUNCTION TO NAVIGATE TO THE TAX LIST SCREEN BY SELECTING ABOUT TAXES IN DRAWER
 void moveToTaxTypeScreen(BuildContext context) {
   List<String> taxList = ["Income Tax", "Capital Gains" ,"Security Transaction Tax", "Prerequisite Tax",
     "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
     "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
     "Custom Duty", "Excise Duty"];
   Get.to(() => TaxType(taxList: taxList));
-  // Navigator.of(context, rootNavigator: true).push(
-  //   MaterialPageRoute(builder: (context) => TaxType(taxList: taxList,)),
-  // );
 }
-void moveToSelectCountryScreen(String? taxName, BuildContext context) async{
 
+/// FUNCTION TO NAVIGATE TO SELECT COUNTRY SCREEN FROM TAXES ACC TO COUNTRY OR CHOOSING ANY TAX FROM DRAWER
+void moveToSelectCountryScreen(String? taxName, BuildContext context) async{
   if(taxName == null){
     Get.to(() => const SelectCountry());
-    // Navigator.of(context, rootNavigator: true).push(
-    //   MaterialPageRoute(builder: (context) => const SelectCountry()),
-    // );
   }
   else{
     var  myCountriesList =  await DBHelper().getCountriesList(taxName);
@@ -189,9 +187,6 @@ void moveToSelectCountryScreen(String? taxName, BuildContext context) async{
     }
     else{
       Get.to(() => const SelectCountry(showNothing: true));
-      // Navigator.of(context, rootNavigator: true).push(
-      //   MaterialPageRoute(builder: (context) =>  const SelectCountry(showNothing: true,)),
-      // );
     }
   }
 }
