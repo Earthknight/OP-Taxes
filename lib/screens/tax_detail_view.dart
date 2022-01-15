@@ -58,6 +58,7 @@ class TaxDetailView extends StatelessWidget {
                   ),
                 ),
               ),
+              // SHOW EXAMPLE TITLE
               Padding(
                 padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
                 child: const MyText(
@@ -66,6 +67,7 @@ class TaxDetailView extends StatelessWidget {
                   fontColor: Colors.black,
                 ),
               ),
+              // SHOW EXAMPLE DATA
               Padding(
                 padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
                 child: MyText(

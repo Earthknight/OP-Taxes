@@ -6,26 +6,34 @@ import 'package:taxes/helpers/common_code.dart';
 import '../widgets/error_alert_box.dart';
 
 class DBHelper {
+  // FUNCTION TO GET SQL DATABASE
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
     return sql.openDatabase(
       path.join(dbPath, 'taxes.db'),
       onCreate: (db, version) {
+        // IF THE TABLES ARE NOT CREATED THEN CREATE THEM
+        // TAXES TABLE
         db.execute(
             'CREATE TABLE taxes(id TEXT PRIMARY KEY, name TEXT, country TEXT, defination TEXT, example TEXT)');
-        print('HEHE');
+
+        // MOST SEARCHED TAXES TABLE
         db.execute(
           CommonCode.CREATE_TABLE +
               ' ' +
               CommonCode.MOSTLY_SEARCHED_TABLE +
               CommonCode.CATEGORY_TABLE,
         );
+
+        // MOST APPEARED TAXES TABLE
         db.execute(
           CommonCode.CREATE_TABLE +
               ' ' +
               CommonCode.MOSTLY_APPEARED_TABLE +
               CommonCode.CATEGORY_TABLE,
         );
+
+        // MOST KNOWN TAXES TABLE
         db.execute(
           CommonCode.CREATE_TABLE +
               ' ' +
@@ -37,6 +45,8 @@ class DBHelper {
     );
   }
 
+  // FUNCTION TO RUN RAW SQL QUERY BY PASSING
+  // THE QUERY AS A STRING IN PARAMETER
   static Future<void> sqlQuery(
     String sqlQueryString,
   ) async {
@@ -50,14 +60,19 @@ class DBHelper {
     }
   }
 
+  // INSERT FUNCTION TO INSERT
+  // DUMMY DATA IN TABLES FOR NOW
   static Future<void> insert() async {
     try {
       final sqlDB = await DBHelper.database();
+
+      // FETCHING THE RECORDS OF TAXES TABLE
       List<Map<String, Object?>> records = await sqlDB.query('taxes');
 
+      // IF RECORDS IS EMPTY THEN FILL IN DATA IN THE TABLE
+      // ELSE NOTHING
       if (records.isEmpty) {
-        print('IS EMPTY');
-
+        // TAX NAMES
         final taxNamesList = [
           'GST',
           'Income Tax',
@@ -67,6 +82,7 @@ class DBHelper {
           'VAT',
         ];
 
+        // TAX COUNTRIES
         final taxCountryList = [
           'India',
           'India',
@@ -76,6 +92,7 @@ class DBHelper {
           'UAE',
         ];
 
+        // TAX DEF
         final taxDefinationList = [
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -85,6 +102,7 @@ class DBHelper {
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         ];
 
+        // TAX EXAMPLES
         final taxExampleList = [
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -94,6 +112,7 @@ class DBHelper {
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         ];
 
+        // INSERTING DATA IN THE TABLE
         for (int i = 0; i < taxNamesList.length; i++) {
           await sqlDB.insert(
             'taxes',
@@ -108,18 +127,23 @@ class DBHelper {
           );
         }
 
+        // INSERTION FOR MOST SEARCHED TAXES IN THE TABLE
         sqlQuery(
           CommonCode.INSERT_INTO +
               ' ' +
               CommonCode.MOSTLY_SEARCHED_TABLE +
               '(id) SELECT id FROM taxes WHERE id=4;',
         );
+
+        // INSERTION FOR MOST APPEARED TAXES IN THE TABLE
         sqlQuery(
           CommonCode.INSERT_INTO +
               ' ' +
               CommonCode.MOSTLY_APPEARED_TABLE +
               '(id) SELECT id FROM taxes WHERE id=1;',
         );
+
+        // INSERTION FOR MOST KNOWN TAXES IN THE TABLE
         sqlQuery(
           CommonCode.INSERT_INTO +
               ' ' +
@@ -127,7 +151,8 @@ class DBHelper {
               '(id) SELECT id FROM taxes WHERE id=5;',
         );
       } else {
-        print('NOT EMPTY');
+        // ELSE BLOCK TO ENTER ANY DATA IN EXISTING TABLES
+
         // await sqlDB.insert(
         //   'taxes',
         //   {
@@ -149,6 +174,8 @@ class DBHelper {
     }
   }
 
+  // FUNCTION TO GET THE DATA FROM RESPECTIVE
+  // TABLES BY RUNNING SQL QUERY
   static Future<List<Map<String, dynamic>>> getData(
     String tableName,
   ) async {
@@ -163,11 +190,15 @@ class DBHelper {
     return [];
   }
 
+  // FUNCTION TO GET THE TAX DATA FROM TAX ID
+  // BY RUNNING SQL QUERY
   static Future<Map<String, dynamic>> getTaxFromID(
     String taxID,
   ) async {
     try {
       final sqlDB = await DBHelper.database();
+      // FETCH THE TAX OBJECT FROM TAXES TABLE BASED
+      // ON TAX ID AS THE CONDITION IN THE SQL QUERY
       return sqlDB
           .query('taxes', where: 'id = ?', whereArgs: [taxID], limit: 1)
           .then((value) => value[0]);
@@ -179,11 +210,15 @@ class DBHelper {
     return {'error': 'tax does not exists'} as Future<Map<String, dynamic>>;
   }
 
+  // FUNCTION TO GET THE TAX BASED ON
+  // USER INPUT IN SEARCH BAR
   static Future<List<Map<String, dynamic>>> getSearchedTax(
     String searchText,
   ) async {
     try {
       final sqlDB = await DBHelper.database();
+      // SQL QUERY TO FETCH THE TAXES FROM TAXES TABLE
+      // BASED ON TAX NAME AS THE QUERY
       return sqlDB.query(
         'taxes',
         where: 'name = ?',
@@ -239,9 +274,12 @@ class DBHelper {
     return [];
   }
 
+  // FUNCTION TO GET THE COUNTRIES FROM TAX NAME
   static Future<List> getCountriesFromTax(String taxName) async {
     try {
       final sqlDB = await DBHelper.database();
+      // SQL QUERY TO FETCH TAXES FROM TAXES TABLE
+      // BASED ON COUNTRY AS THE CONDITION
       return sqlDB.query(
         'taxes',
         columns: ['country'],

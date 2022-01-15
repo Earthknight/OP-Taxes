@@ -6,7 +6,7 @@ import '../widgets/error_alert_box.dart';
 import '../helpers/db_helper.dart';
 
 class HomeStateController extends GetxController {
-  // VARS FOR MANAGING THE STATE OF HOME SCREEN
+  // VARIABLES FOR MANAGING THE STATE OF HOME SCREEN
   List taxes = [];
   List mostlySearchedTaxes = [];
   List mostlyAppearedTaxes = [];
@@ -18,6 +18,7 @@ class HomeStateController extends GetxController {
   // TEXT EDIT CONTROLLER FOR USER SEARCH
   final searchTextController = TextEditingController();
 
+  // FUNCTION TO RETURN TAX DATA IN THE FORM OF MAP
   Map<String, dynamic> getTaxMap(Map<String, dynamic> map) {
     return {
       'tax_name': map['name'],
@@ -27,6 +28,8 @@ class HomeStateController extends GetxController {
     };
   }
 
+  // FUNCTION TO GENERATE LIST OF
+  // IDS OF TAXES AND RETURN THAT
   List getIDsList(
     List<Map<String, dynamic>> dataList,
     List ids,
@@ -37,6 +40,8 @@ class HomeStateController extends GetxController {
     return ids;
   }
 
+  // FUNCTION TO SET DIFFERENT KIND OF
+  // TAX TYPES IN THEIR RESPECTIVE LISTS
   Future<void> setTaxes(
     List ids,
     List differentTaxes,
@@ -52,6 +57,7 @@ class HomeStateController extends GetxController {
   // METHOD TO FETCH THE KINDS OF TAXES
   // FROM DB AND SET IT ON HOME SCREEN
   Future<void> fetchAndSetTaxes() async {
+    // GATHERING DIFFERENT KINDS OF TAXES FROM THE TABLES
     final taxesDataList = await DBHelper.getData('taxes');
     final mostSearchedTaxesDataList =
         await DBHelper.getData(CommonCode.MOSTLY_SEARCHED_TABLE);
@@ -68,6 +74,7 @@ class HomeStateController extends GetxController {
     }
 
     var ids = [];
+    // FETCHING FOR MOST SEARCHED TAXES TYPE
     if (mostSearchedTaxesDataList.isNotEmpty) {
       ids = getIDsList(
         mostSearchedTaxesDataList,
@@ -80,6 +87,7 @@ class HomeStateController extends GetxController {
       );
     }
 
+    // FETCHING FOR MOST APPEARED TAXES TYPE
     if (mostAppearedTaxesDataList.isNotEmpty) {
       ids = [];
       ids = getIDsList(
@@ -93,6 +101,7 @@ class HomeStateController extends GetxController {
       );
     }
 
+    // FETCHING FOR MOST KNOWN TAXES TYPE
     if (mostKnownTaxesDataList.isNotEmpty) {
       ids = [];
       ids = getIDsList(
@@ -106,6 +115,7 @@ class HomeStateController extends GetxController {
       );
     }
 
+    // SET LOADING TO FALSE AND UPDATE
     isLoading = false;
     update();
   }
@@ -130,6 +140,8 @@ class HomeStateController extends GetxController {
     update();
   }
 
+  // METHOD TO UPDATE THE SEARCH MODE
+  // WHEN USER TAPS BACK BUTTON
   void updateIsSearchMode() {
     isSearchMode = !isSearchMode;
     searchTextController.clear();
@@ -141,7 +153,7 @@ class HomeStateController extends GetxController {
   void onInit() {
     super.onInit();
     isLoading = true;
-    fetchAndSetTaxes();
     DBHelper.insert();
+    fetchAndSetTaxes();
   }
 }
