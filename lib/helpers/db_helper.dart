@@ -208,6 +208,7 @@ class DBHelper {
       }
     }
     print(taxes);
+
     return taxes;
   }
 
