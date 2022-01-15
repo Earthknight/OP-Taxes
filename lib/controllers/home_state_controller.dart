@@ -18,6 +18,37 @@ class HomeStateController extends GetxController {
   // TEXT EDIT CONTROLLER FOR USER SEARCH
   final searchTextController = TextEditingController();
 
+  Map<String, dynamic> getTaxMap(Map<String, dynamic> map) {
+    return {
+      'tax_name': map['name'],
+      'country': map['country'],
+      'color': Colors.primaries[Random().nextInt(Colors.primaries.length)],
+      'tax_data': map,
+    };
+  }
+
+  List getIDsList(
+    List<Map<String, dynamic>> dataList,
+    List ids,
+  ) {
+    for (int i = 0; i < dataList.length; i++) {
+      ids.add(dataList[i]['id']);
+    }
+    return ids;
+  }
+
+  Future<void> setTaxes(
+    List ids,
+    List differentTaxes,
+  ) async {
+    for (int j = 0; j < ids.length; j++) {
+      await DBHelper.getTaxFromID(ids[j])
+          .then((value) => differentTaxes.add(getTaxMap(value)));
+    }
+
+    update();
+  }
+
   // METHOD TO FETCH THE KINDS OF TAXES
   // FROM DB AND SET IT ON HOME SCREEN
   Future<void> fetchAndSetTaxes() async {
@@ -31,74 +62,49 @@ class HomeStateController extends GetxController {
 
     if (taxesDataList.isNotEmpty) {
       // MAPPING OVER THE RECORDS AND SETTING IT TO LIST OF TAXES
-      taxes = taxesDataList
-          .map((tax) => {
-                'tax_name': tax['name'],
-                'country': tax['country'],
-                'color':
-                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                'tax_data': tax,
-              })
-          .toList();
+      taxes = taxesDataList.map((tax) => getTaxMap(tax)).toList();
     } else {
       ErrorAlertBox.getErrorAlertBox('Error occred while fetching taxes');
     }
 
     var ids = [];
     if (mostSearchedTaxesDataList.isNotEmpty) {
-      for (int i = 0; i < mostSearchedTaxesDataList.length; i++) {
-        ids.add(mostSearchedTaxesDataList[i]['id']);
-      }
+      ids = getIDsList(
+        mostSearchedTaxesDataList,
+        ids,
+      );
 
-      for (int j = 0; j < ids.length; j++) {
-        await DBHelper.getTaxFromID(ids[j])
-            .then((value) => mostlySearchedTaxes.add({
-                  'tax_name': value['name'],
-                  'country': value['country'],
-                  'color': Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)],
-                  'tax_data': value,
-                }));
-      }
+      setTaxes(
+        ids,
+        mostlySearchedTaxes,
+      );
     }
 
     if (mostAppearedTaxesDataList.isNotEmpty) {
       ids = [];
-      for (int i = 0; i < mostAppearedTaxesDataList.length; i++) {
-        ids.add(mostAppearedTaxesDataList[i]['id']);
-      }
-      for (int j = 0; j < ids.length; j++) {
-        await DBHelper.getTaxFromID(ids[j])
-            .then((value) => mostlyAppearedTaxes.add({
-                  'tax_name': value['name'],
-                  'country': value['country'],
-                  'color': Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)],
-                  'tax_data': value,
-                }));
-      }
+      ids = getIDsList(
+        mostAppearedTaxesDataList,
+        ids,
+      );
+
+      setTaxes(
+        ids,
+        mostlyAppearedTaxes,
+      );
     }
 
     if (mostKnownTaxesDataList.isNotEmpty) {
       ids = [];
-      for (int i = 0; i < mostKnownTaxesDataList.length; i++) {
-        ids.add(mostKnownTaxesDataList[i]['id']);
-      }
-      for (int j = 0; j < ids.length; j++) {
-        await DBHelper.getTaxFromID(ids[j])
-            .then((value) => mostlyKnownTaxes.add({
-                  'tax_name': value['name'],
-                  'country': value['country'],
-                  'color': Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)],
-                  'tax_data': value,
-                }));
-      }
-    }
+      ids = getIDsList(
+        mostKnownTaxesDataList,
+        ids,
+      );
 
-    print(mostlyAppearedTaxes);
-    print(mostlyKnownTaxes);
-    print(mostlySearchedTaxes);
+      setTaxes(
+        ids,
+        mostlyKnownTaxes,
+      );
+    }
 
     isLoading = false;
     update();
