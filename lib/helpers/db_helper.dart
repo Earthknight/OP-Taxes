@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 import 'package:taxes/helpers/common_code.dart';
-
 import '../widgets/error_alert_box.dart';
 
 class DBHelper {
@@ -48,6 +47,7 @@ class DBHelper {
   // FUNCTION TO RUN RAW SQL QUERY BY PASSING
   // THE QUERY AS A STRING IN PARAMETER
   static Future<void> sqlQuery(
+<<<<<<< Updated upstream
     String sqlQueryString,
   ) async {
     try {
@@ -58,6 +58,12 @@ class DBHelper {
     } catch (error) {
       ErrorAlertBox.getErrorAlertBox(error.toString());
     }
+=======
+      String sqlQueryString,
+      ) async {
+    final sqlDB = await DBHelper.database();
+    sqlDB.rawQuery(sqlQueryString);
+>>>>>>> Stashed changes
   }
 
   // INSERT FUNCTION TO INSERT
@@ -76,10 +82,10 @@ class DBHelper {
         final taxNamesList = [
           'GST',
           'Income Tax',
-          'Co-orperate Tax',
-          'Business Tax',
-          'Wealth Tax',
-          'VAT',
+          'Cooperate Tax',
+          'Property Tax',
+          'Capital Gains',
+          'Income Tax',
         ];
 
         // TAX COUNTRIES
@@ -177,8 +183,8 @@ class DBHelper {
   // FUNCTION TO GET THE DATA FROM RESPECTIVE
   // TABLES BY RUNNING SQL QUERY
   static Future<List<Map<String, dynamic>>> getData(
-    String tableName,
-  ) async {
+      String tableName,
+      ) async {
     try {
       final sqlDB = await DBHelper.database();
       return sqlDB.query(tableName);
@@ -193,6 +199,7 @@ class DBHelper {
   // FUNCTION TO GET THE TAX DATA FROM TAX ID
   // BY RUNNING SQL QUERY
   static Future<Map<String, dynamic>> getTaxFromID(
+<<<<<<< Updated upstream
     String taxID,
   ) async {
     try {
@@ -208,13 +215,21 @@ class DBHelper {
       ErrorAlertBox.getErrorAlertBox(error.toString());
     }
     return {'error': 'tax does not exists'} as Future<Map<String, dynamic>>;
+=======
+      String taxID,
+      ) async {
+    final sqlDB = await DBHelper.database();
+    return sqlDB
+        .query('taxes', where: 'id = ?', whereArgs: [taxID], limit: 1)
+        .then((value) => value[0]);
+>>>>>>> Stashed changes
   }
 
   // FUNCTION TO GET THE TAX BASED ON
   // USER INPUT IN SEARCH BAR
   static Future<List<Map<String, dynamic>>> getSearchedTax(
-    String searchText,
-  ) async {
+      String searchText,
+      ) async {
     try {
       final sqlDB = await DBHelper.database();
       // SQL QUERY TO FETCH THE TAXES FROM TAXES TABLE
@@ -293,4 +308,23 @@ class DBHelper {
     }
     return [];
   }
+  static Future<List<Map<String, dynamic>>> getTaxDetails(
+      String taxName , String countryName
+      ) async {
+    try {
+      final sqlDB = await DBHelper.database();
+      return sqlDB.query(
+        'taxes',
+        where: 'name = ? and country =?',
+        whereArgs: [taxName, countryName],
+        // limit: 1,
+      );
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
+    return [];
+  }
+
 }
