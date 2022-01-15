@@ -293,4 +293,23 @@ class DBHelper {
     }
     return [];
   }
+
+  static Future<List<Map<String, dynamic>>> getTaxDetails(
+      String taxName , String countryName
+      ) async {
+    try {
+      final sqlDB = await DBHelper.database();
+      return sqlDB.query(
+        'taxes',
+        where: 'name = ? and country =?',
+        whereArgs: [taxName, countryName],
+        // limit: 1,
+      );
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
+    return [];
+  }
 }

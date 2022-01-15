@@ -3,17 +3,22 @@ import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:taxes/helpers/db_helper.dart';
 import 'package:taxes/screens/tax_list_screen.dart';
 import 'package:taxes/widgets/ImageWidget.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
 import 'drawer.dart';
+
 class SelectCountry extends StatefulWidget {
   final List<String>? countriesList;
   final bool showNothing;
+  final bool showDetails;
+  final String? taxName;
 
-  const SelectCountry({Key? key, this.countriesList, this.showNothing = false})
+  const SelectCountry({Key? key, this.countriesList, this.showDetails=false, this.showNothing = false, this.taxName})
       : super(key: key);
 
   @override
@@ -46,7 +51,7 @@ class SelectCountryState extends State<SelectCountry> {
               height: 1.0,
             ),
             const Center(
-                child: const MyText(
+                child: MyText(
                   text: "Please Select Your\n Country",
                   size: 22,
                   fontColor: Colors.black,
@@ -55,7 +60,7 @@ class SelectCountryState extends State<SelectCountry> {
                 )),
             // MySizedBox(height: 8.0,),
             const Center(
-                child: const MyText(
+                child: MyText(
                   text: "To get the more info about the Tax",
                   size: 9,
                   fontColor: Colors.grey,
@@ -73,7 +78,7 @@ class SelectCountryState extends State<SelectCountry> {
                   children: <Widget>[
                     widget.countriesList == null
                         ? _buildCountryPickerDropdownSoloExpanded()
-                        : countryDropDown((widget.countriesList)!),
+                        : countryDropDown((widget.countriesList)!,widget.taxName!,),
                   ],
                 ),
               ),
@@ -84,7 +89,7 @@ class SelectCountryState extends State<SelectCountry> {
     );
   }
 
-  Widget countryDropDown(List<String> countriesList) {
+  Widget countryDropDown(List<String> countriesList, String taxName) {
     String? _currentItemSelected = countriesList[0];
     return DropdownButton<String>(
       items: countriesList.map((String value) {
@@ -99,9 +104,9 @@ class SelectCountryState extends State<SelectCountry> {
       value: _currentItemSelected,
       onChanged: (newValueSelected) {
         setState(() {
-          moveToTaxScreen(newValueSelected! , context);
-          print(" new value : $newValueSelected");
+          // print(" new value : $newValueSelected");
           _currentItemSelected = newValueSelected;
+          moveToTaxDetailScreen(taxName, newValueSelected!);
         });
       },
       itemHeight: null,
@@ -117,8 +122,8 @@ class SelectCountryState extends State<SelectCountry> {
       ),
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       onValuePicked: (Country country) {
-        print(country.name);
-        moveToTaxScreen(country.name.toString() , context);
+        // print(country.name);
+        moveToTaxScreen(country.name.toString(), context);
       },
       itemBuilder: (Country country) {
         return Row(
@@ -137,14 +142,16 @@ class SelectCountryState extends State<SelectCountry> {
   void moveToTaxScreen(String countryName, BuildContext context) async {
     var myTaxesList =  await DBHelper().getTaxesList(countryName);
     if(myTaxesList.isNotEmpty){
-      Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(builder: (context) =>  TaxType(taxList: myTaxesList,)),
-      );
+      Get.to(() => TaxType(taxList: myTaxesList, country: countryName,showDetailWithCountry: true,));
+      // Navigator.of(context, rootNavigator: true).push(
+      //   MaterialPageRoute(builder: (context) =>  TaxType(taxList: myTaxesList,showDetailWithCountry: true, country: countryName,)),
+      // );
     }
     else{
-      Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(builder: (context) =>  TaxType(showNothing: true,)),
-      );
+      Get.to(() => TaxType(showNothing: true));
+      //   Navigator.of(context, rootNavigator: true).push(
+      //     MaterialPageRoute(builder: (context) =>  TaxType(showNothing: true,)),
+      //   );
     }
   }
 }
