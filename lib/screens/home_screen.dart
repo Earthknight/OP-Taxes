@@ -42,6 +42,18 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  void goToTaxDetailScreen(Map<String, dynamic> tax) {
+    try {
+      Get.to(() => TaxDetailView(
+            taxData: tax['tax_data'],
+          ));
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(
+        error.toString(),
+      );
+    }
+  }
+
   Widget getTaxHorizontalListView(
     Size deviceSize,
     String title,
@@ -69,15 +81,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   // GETX METHOD TO ROUTE TO NEW PAGE
                   // I.E. TAX DETAIL VIEW ON TAP
-                  try {
-                    Get.to(() => TaxDetailView(
-                          taxData: differentTaxes[index]['tax_data'],
-                        ));
-                  } catch (error) {
-                    ErrorAlertBox.getErrorAlertBox(
-                      error.toString(),
-                    );
-                  }
+                  goToTaxDetailScreen(differentTaxes[index]);
                 },
                 // CUSTOM TAX CARD
                 child: CustomTaxCard.getTaxCard(
@@ -292,9 +296,7 @@ class HomeScreen extends StatelessWidget {
                                           throw Exception('An error occured!');
                                         }
 
-                                        Get.to(() => TaxDetailView(
-                                              taxData: tax.first['tax_data'],
-                                            ));
+                                        goToTaxDetailScreen(tax.first);
                                       } catch (error) {
                                         ErrorAlertBox.getErrorAlertBox(
                                           error.toString(),
