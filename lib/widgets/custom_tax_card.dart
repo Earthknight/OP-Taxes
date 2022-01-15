@@ -5,6 +5,8 @@ import 'custom_boxes.dart';
 import 'custom_card.dart';
 
 class CustomTaxCard {
+  static bool isSaved = false;
+
   static Widget getTaxCard(
     double devicewidth,
     double deviceHeight,
@@ -62,8 +64,13 @@ class CustomTaxCard {
                       ),
                     ),
                   ),
-                  const Icon(
-                    Icons.book_outlined,
+                  IconButton(
+                    onPressed: () {
+                      // SAVE / UNSAVE FOR THE PARTICULAR USER
+                    },
+                    icon: Icon(
+                      isSaved ? Icons.book : Icons.book_outlined,
+                    ),
                   ),
                 ],
               ),
