@@ -40,8 +40,14 @@ class DBHelper {
   static Future<void> sqlQuery(
     String sqlQueryString,
   ) async {
-    final sqlDB = await DBHelper.database();
-    sqlDB.rawQuery(sqlQueryString);
+    try {
+      final sqlDB = await DBHelper.database();
+      sqlDB.rawQuery(sqlQueryString);
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
   }
 
   static Future<void> insert() async {
@@ -160,10 +166,17 @@ class DBHelper {
   static Future<Map<String, dynamic>> getTaxFromID(
     String taxID,
   ) async {
-    final sqlDB = await DBHelper.database();
-    return sqlDB
-        .query('taxes', where: 'id = ?', whereArgs: [taxID], limit: 1)
-        .then((value) => value[0]);
+    try {
+      final sqlDB = await DBHelper.database();
+      return sqlDB
+          .query('taxes', where: 'id = ?', whereArgs: [taxID], limit: 1)
+          .then((value) => value[0]);
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
+    return {'error': 'tax does not exists'} as Future<Map<String, dynamic>>;
   }
 
   static Future<List<Map<String, dynamic>>> getSearchedTax(
@@ -186,30 +199,44 @@ class DBHelper {
   }
 
   Future<List<String>> getCountriesList(String selectedTax) async {
-    var results = await getData('taxes');
-    print("results: $results");
-    List<String> countries = [];
-    for (int i = 0; i < results.length; i++) {
-      if (selectedTax == results[i]["name"].toString()) {
-        countries.add(results[i]["country"].toString());
+    try {
+      var results = await getData('taxes');
+      print("results: $results");
+      List<String> countries = [];
+      for (int i = 0; i < results.length; i++) {
+        if (selectedTax == results[i]["name"].toString()) {
+          countries.add(results[i]["country"].toString());
+        }
       }
+      print(countries);
+      return countries;
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
     }
-    print(countries);
-    return countries;
+    return [];
   }
 
   Future<List<String>> getTaxesList(String selectedCountry) async {
-    var results = await getData('taxes');
-    print("results: $results");
-    List<String> taxes = [];
-    for (int i = 0; i < results.length; i++) {
-      if (selectedCountry == results[i]["country"].toString()) {
-        taxes.add(results[i]["name"].toString());
+    try {
+      var results = await getData('taxes');
+      print("results: $results");
+      List<String> taxes = [];
+      for (int i = 0; i < results.length; i++) {
+        if (selectedCountry == results[i]["country"].toString()) {
+          taxes.add(results[i]["name"].toString());
+        }
       }
-    }
-    print(taxes);
+      print(taxes);
 
-    return taxes;
+      return taxes;
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
+    return [];
   }
 
   static Future<List> getCountriesFromTax(String taxName) async {
