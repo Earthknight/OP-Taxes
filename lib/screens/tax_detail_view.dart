@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import '../helpers/common_code.dart';
 import '../widgets/TextWidget.dart';
 import '../widgets/custom_boxes.dart';
+import '../models/tax_model.dart';
 
 class TaxDetailView extends StatelessWidget {
   const TaxDetailView({
     Key? key,
-    this.taxData,
+    required this.taxData,
   }) : super(key: key);
-  final taxData;
+  final Tax taxData;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +37,12 @@ class TaxDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       MyText(
-                        text: taxData['name'],
+                        text: taxData.taxName,
                         size: 30,
                         fontColor: Colors.white,
                       ),
                       MyText(
-                        text: taxData['country'],
+                        text: taxData.taxCountry,
                         size: 15,
                         fontColor: Colors.white,
                       ),
@@ -49,7 +50,7 @@ class TaxDetailView extends StatelessWidget {
                         height: 10,
                       ),
                       MyText(
-                        text: taxData['defination'],
+                        text: taxData.taxDefinition,
                         size: 10,
                         fontColor: Colors.white,
                         lines: 5,
@@ -71,7 +72,7 @@ class TaxDetailView extends StatelessWidget {
               Padding(
                 padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
                 child: MyText(
-                  text: taxData['example'],
+                  text: taxData.taxExample,
                   size: 10,
                   fontColor: Colors.black,
                   lines: 5,

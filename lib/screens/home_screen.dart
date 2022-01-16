@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../models/tax_model.dart';
 
 // CONTROLLERS
 import '../controllers/home_state_controller.dart';
@@ -48,10 +51,10 @@ class HomeScreen extends StatelessWidget {
   }
 
   // FUNCTION TO ROUTE TO TAX DETAIL SCREEN ON USER TAP
-  void goToTaxDetailScreen(Map<String, dynamic> tax) {
+  void goToTaxDetailScreen(Tax tax) {
     try {
       Get.to(() => TaxDetailView(
-            taxData: tax['tax_data'],
+            taxData: tax,
           ));
     } catch (error) {
       ErrorAlertBox.getErrorAlertBox(
@@ -97,9 +100,11 @@ class HomeScreen extends StatelessWidget {
                 child: CustomTaxCard.getTaxCard(
                   deviceSize.width,
                   deviceSize.height,
-                  differentTaxes[index]['country'].toString(),
-                  differentTaxes[index]['tax_name'].toString(),
-                  differentTaxes[index]['color'] as Color,
+                  // differentTaxes[index]['country'].toString(),
+                  // differentTaxes[index]['tax_name'].toString(),
+                  differentTaxes[index],
+                  // differentTaxes[index]['color'] as Color,
+                  Colors.primaries[Random().nextInt(Colors.primaries.length)],
                 ),
               );
             },
@@ -298,8 +303,7 @@ class HomeScreen extends StatelessWidget {
                                       try {
                                         final tax = value.taxes.where(
                                             (element) =>
-                                                element['tax_name']
-                                                    .toString() ==
+                                                element.taxName.toString() ==
                                                 homeTaxData[index]['tax_name']
                                                     .toString());
 

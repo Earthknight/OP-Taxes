@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taxes/controllers/home_state_controller.dart';
 import 'package:taxes/screens/tax_detail_view.dart';
 import 'package:taxes/widgets/custom_search_bar.dart';
 import '../screens/drawer.dart';
@@ -11,12 +12,12 @@ class SearchResultTaxType extends StatelessWidget {
     Key? key,
     this.searchResult,
     this.countriesList,
-    this.taxValue,
+    required this.taxValue,
   }) : super(key: key);
 
   final searchResult;
   final countriesList;
-  final taxValue;
+  final HomeStateController taxValue;
 
   Widget countryDropDown(List<String> countriesList) {
     String? _currentItemSelected = countriesList[0];
@@ -32,13 +33,13 @@ class SearchResultTaxType extends StatelessWidget {
       }).toList(),
       value: _currentItemSelected,
       onChanged: (newValueSelected) {
-        print(" new value : $newValueSelected");
+        // print(" new value : $newValueSelected");
         _currentItemSelected = newValueSelected;
         final tax = taxValue.taxes.where((element) =>
-            element['country'].toString() == newValueSelected.toString());
-        print(tax.first['tax_data']);
+            element.taxCountry.toString() == newValueSelected.toString());
+        // print(tax.first.taxName);
         Get.to(() => TaxDetailView(
-              taxData: tax.first['tax_data'],
+              taxData: tax.first,
             ));
       },
       itemHeight: null,

@@ -3,6 +3,7 @@ import '../helpers/common_code.dart';
 
 import 'custom_boxes.dart';
 import 'custom_card.dart';
+import '../models/tax_model.dart';
 
 class CustomTaxCard {
   static bool isSaved = false;
@@ -10,8 +11,9 @@ class CustomTaxCard {
   static Widget getTaxCard(
     double devicewidth,
     double deviceHeight,
-    String country,
-    String taxName,
+    // String country,
+    // String taxName,
+    Tax taxObject,
     Color bgColor,
   ) {
     return Container(
@@ -39,7 +41,7 @@ class CustomTaxCard {
             ),
             CustomBoxes.getFittedBox(
               Text(
-                taxName,
+                taxObject.taxName,
                 style: const TextStyle(
                   fontSize: 18,
                 ),
@@ -58,7 +60,7 @@ class CustomTaxCard {
                 children: [
                   CustomBoxes.getFittedBox(
                     Text(
-                      country,
+                      taxObject.taxCountry,
                       style: const TextStyle(
                         fontSize: 15,
                       ),

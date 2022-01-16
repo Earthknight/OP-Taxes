@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:taxes/helpers/common_code.dart';
 import '../widgets/error_alert_box.dart';
 import '../helpers/db_helper.dart';
+import '../models/tax_model.dart';
 
 class HomeStateController extends GetxController {
   // VARIABLES FOR MANAGING THE STATE OF HOME SCREEN
@@ -17,6 +18,16 @@ class HomeStateController extends GetxController {
 
   // TEXT EDIT CONTROLLER FOR USER SEARCH
   final searchTextController = TextEditingController();
+
+  Tax getTaxObject(Map<String, dynamic> map) {
+    return Tax(
+      map['name'],
+      map['country'],
+      map['id'],
+      map['defination'],
+      map['example'],
+    );
+  }
 
   // FUNCTION TO RETURN TAX DATA IN THE FORM OF MAP
   Map<String, dynamic> getTaxMap(Map<String, dynamic> map) {
@@ -48,7 +59,8 @@ class HomeStateController extends GetxController {
   ) async {
     for (int j = 0; j < ids.length; j++) {
       await DBHelper.getTaxFromID(ids[j])
-          .then((value) => differentTaxes.add(getTaxMap(value)));
+          // .then((value) => differentTaxes.add(getTaxMap(value)));
+          .then((value) => differentTaxes.add(getTaxObject(value)));
     }
 
     update();
@@ -68,7 +80,8 @@ class HomeStateController extends GetxController {
 
     if (taxesDataList.isNotEmpty) {
       // MAPPING OVER THE RECORDS AND SETTING IT TO LIST OF TAXES
-      taxes = taxesDataList.map((tax) => getTaxMap(tax)).toList();
+      // taxes = taxesDataList.map((tax) => getTaxMap(tax)).toList();
+      taxes = taxesDataList.map((tax) => getTaxObject(tax)).toList();
     } else {
       ErrorAlertBox.getErrorAlertBox('Error occred while fetching taxes');
     }
