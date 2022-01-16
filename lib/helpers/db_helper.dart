@@ -67,11 +67,22 @@ class DBHelper {
       final sqlDB = await DBHelper.database();
 
       // FETCHING THE RECORDS OF TAXES TABLE
-      List<Map<String, Object?>> records = await sqlDB.query('taxes');
+      List<Map<String, Object?>> taxRecords = await sqlDB.query(
+        'taxes',
+      );
+      List<Map<String, Object?>> mostlySearchedRecords = await sqlDB.query(
+        CommonCode.MOSTLY_SEARCHED_TABLE,
+      );
+      List<Map<String, Object?>> mostlyAppearedRecords = await sqlDB.query(
+        CommonCode.MOSTLY_APPEARED_TABLE,
+      );
+      List<Map<String, Object?>> mostlyKnownRecords = await sqlDB.query(
+        CommonCode.MOSTLY_KNOWN_TABLE,
+      );
 
       // IF RECORDS IS EMPTY THEN FILL IN DATA IN THE TABLE
       // ELSE NOTHING
-      if (records.isEmpty) {
+      if (taxRecords.isEmpty) {
         // TAX NAMES
         final taxNamesList = [
           'GST',
@@ -128,28 +139,34 @@ class DBHelper {
         }
 
         // INSERTION FOR MOST SEARCHED TAXES IN THE TABLE
-        sqlQuery(
-          CommonCode.INSERT_INTO +
-              ' ' +
-              CommonCode.MOSTLY_SEARCHED_TABLE +
-              '(id) SELECT id FROM taxes WHERE id=4;',
-        );
+        if (mostlySearchedRecords.isEmpty) {
+          sqlQuery(
+            CommonCode.INSERT_INTO +
+                ' ' +
+                CommonCode.MOSTLY_SEARCHED_TABLE +
+                '(id) SELECT id FROM taxes WHERE id=4;',
+          );
+        }
 
         // INSERTION FOR MOST APPEARED TAXES IN THE TABLE
-        sqlQuery(
-          CommonCode.INSERT_INTO +
-              ' ' +
-              CommonCode.MOSTLY_APPEARED_TABLE +
-              '(id) SELECT id FROM taxes WHERE id=1;',
-        );
+        if (mostlyAppearedRecords.isEmpty) {
+          sqlQuery(
+            CommonCode.INSERT_INTO +
+                ' ' +
+                CommonCode.MOSTLY_APPEARED_TABLE +
+                '(id) SELECT id FROM taxes WHERE id=1;',
+          );
+        }
 
         // INSERTION FOR MOST KNOWN TAXES IN THE TABLE
-        sqlQuery(
-          CommonCode.INSERT_INTO +
-              ' ' +
-              CommonCode.MOSTLY_KNOWN_TABLE +
-              '(id) SELECT id FROM taxes WHERE id=5;',
-        );
+        if (mostlyKnownRecords.isEmpty) {
+          sqlQuery(
+            CommonCode.INSERT_INTO +
+                ' ' +
+                CommonCode.MOSTLY_KNOWN_TABLE +
+                '(id) SELECT id FROM taxes WHERE id=5;',
+          );
+        }
       } else {
         // ELSE BLOCK TO ENTER ANY DATA IN EXISTING TABLES
 

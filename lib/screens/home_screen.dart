@@ -98,12 +98,14 @@ class HomeScreen extends StatelessWidget {
                   goToTaxDetailScreen(differentTaxes[index]);
                 },
                 // CUSTOM TAX CARD
-                child: CustomTaxCard.getTaxCard(
-                  deviceSize.width,
-                  deviceSize.height,
-                  differentTaxes[index], // TAX OBJECT
-                  Colors.primaries[Random().nextInt(
-                      Colors.primaries.length)], // GENERATE RANDOM COLORS
+                child: CustomBoxes.getFittedBox(
+                  CustomTaxCard.getTaxCard(
+                    deviceSize.width,
+                    deviceSize.height,
+                    differentTaxes[index], // TAX OBJECT
+                    Colors.primaries[Random().nextInt(
+                        Colors.primaries.length)], // GENERATE RANDOM COLORS
+                  ),
                 ),
               );
             },
@@ -293,14 +295,14 @@ class HomeScreen extends StatelessWidget {
                             // SHOW THE 6 SIX TYPES OF CIRCULAR ICONS FOR TAXES IN GRID FORMAT
                             Container(
                               height: deviceSize.height * 0.35,
-                              padding: const EdgeInsets.all(12.0),
+                              padding: const EdgeInsets.all(10.0),
                               child: GridView.builder(
                                 itemCount: homeTaxData.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
-                                  crossAxisSpacing: 4.0,
-                                  mainAxisSpacing: 4.0,
+                                  crossAxisSpacing: 3.0,
+                                  mainAxisSpacing: 3.0,
                                 ),
                                 itemBuilder: (BuildContext context, int index) {
                                   return GestureDetector(

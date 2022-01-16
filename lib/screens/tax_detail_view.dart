@@ -34,19 +34,23 @@ class TaxDetailView extends StatelessWidget {
                   height: deviceSize.height * 0.4,
                   width: deviceSize.width,
                   color: Colors.green.shade400,
-                  padding: CommonCode.setEgdeInsetsSymmteric(10, 15),
+                  padding: CommonCode.setEgdeInsetsSymmteric(8, 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MyText(
-                        text: taxData.taxName,
-                        size: 30,
-                        fontColor: Colors.white,
+                      CustomBoxes.getFittedBox(
+                        MyText(
+                          text: taxData.taxName,
+                          size: 26,
+                          fontColor: Colors.white,
+                        ),
                       ),
-                      MyText(
-                        text: taxData.taxCountry,
-                        size: 15,
-                        fontColor: Colors.white,
+                      CustomBoxes.getFittedBox(
+                        MyText(
+                          text: taxData.taxCountry,
+                          size: 12,
+                          fontColor: Colors.white,
+                        ),
                       ),
                       CustomBoxes.getSizedBox(
                         height: 10,
