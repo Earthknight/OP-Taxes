@@ -161,7 +161,7 @@ class HomeStateController extends GetxController {
     update();
   }
 
-  // INIT METHOD
+  //  INIT METHOD
   @override
   void onInit() {
     super.onInit();
