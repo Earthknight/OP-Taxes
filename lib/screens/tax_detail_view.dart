@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/drawer.dart';
 import '../helpers/common_code.dart';
 import '../widgets/TextWidget.dart';
 import '../widgets/custom_boxes.dart';
@@ -16,6 +17,7 @@ class TaxDetailView extends StatelessWidget {
     final deviceSize = CommonCode.getDeviceSize(context);
 
     return Scaffold(
+      appBar: AppBarWidget(),
       body: SingleChildScrollView(
         child: Container(
           height: deviceSize.height,

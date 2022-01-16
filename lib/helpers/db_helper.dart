@@ -300,10 +300,11 @@ class DBHelper {
 
   /// FUNCTION TO GET THE DETAILS OF THE TAX FROM ITS NAME AND COUNTRY
   static Future<List<Map<String, dynamic>>> getTaxDetails(
-      String taxName , String countryName
-      ) async {
+      String taxName, String countryName) async {
     try {
       final sqlDB = await DBHelper.database();
+      // SQL QUERY TO GET TAX DETAIL FROM DB TABLE
+      // TAXES USING TAX NAME AND TAX COUNTRY
       return sqlDB.query(
         'taxes',
         where: 'name = ? and country =?',

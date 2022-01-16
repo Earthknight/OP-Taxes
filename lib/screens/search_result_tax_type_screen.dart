@@ -19,6 +19,7 @@ class SearchResultTaxType extends StatelessWidget {
   final countriesList;
   final HomeStateController taxValue;
 
+  // COUNTRY DROP DOWN FUNCTION
   Widget countryDropDown(List<String> countriesList) {
     String? _currentItemSelected = countriesList[0];
     return DropdownButton<String>(
@@ -38,6 +39,7 @@ class SearchResultTaxType extends StatelessWidget {
         final tax = taxValue.taxes.where((element) =>
             element.taxCountry.toString() == newValueSelected.toString());
         // print(tax.first.taxName);
+        // ROUTE TO TAX DETAIL VIEW SCREEN BY PASSING THE OBJECT
         Get.to(() => TaxDetailView(
               taxData: tax.first,
             ));
@@ -78,6 +80,7 @@ class SearchResultTaxType extends StatelessWidget {
                     ),
                   ),
                 ),
+                // DUMMY SEARCH BAR FOR NOW
                 CustomSearchBar.getSearchBar(
                   TextEditingController(),
                   () {},

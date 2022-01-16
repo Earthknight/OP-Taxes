@@ -19,6 +19,7 @@ class HomeStateController extends GetxController {
   // TEXT EDIT CONTROLLER FOR USER SEARCH
   final searchTextController = TextEditingController();
 
+  // FUNCTION TO GET TAX OBJECT FROM MAP
   Tax getTaxObject(Map<String, dynamic> map) {
     return Tax(
       map['name'],
@@ -30,14 +31,14 @@ class HomeStateController extends GetxController {
   }
 
   // FUNCTION TO RETURN TAX DATA IN THE FORM OF MAP
-  Map<String, dynamic> getTaxMap(Map<String, dynamic> map) {
-    return {
-      'tax_name': map['name'],
-      'country': map['country'],
-      'color': Colors.primaries[Random().nextInt(Colors.primaries.length)],
-      'tax_data': map,
-    };
-  }
+  // Map<String, dynamic> getTaxMap(Map<String, dynamic> map) {
+  //   return {
+  //     'tax_name': map['name'],
+  //     'country': map['country'],
+  //     'color': Colors.primaries[Random().nextInt(Colors.primaries.length)],
+  //     'tax_data': map,
+  //   };
+  // }
 
   // FUNCTION TO GENERATE LIST OF
   // IDS OF TAXES AND RETURN THAT
@@ -94,6 +95,7 @@ class HomeStateController extends GetxController {
         ids,
       );
 
+      // SET TAXES IN THE RESPECTIVE LIST I.E. MOSTLY SEARCHED TAXES
       setTaxes(
         ids,
         mostlySearchedTaxes,
@@ -108,6 +110,7 @@ class HomeStateController extends GetxController {
         ids,
       );
 
+      // SET TAXES IN THE RESPECTIVE LIST I.E. MOSTLY APPEARED TAXES
       setTaxes(
         ids,
         mostlyAppearedTaxes,
@@ -122,6 +125,7 @@ class HomeStateController extends GetxController {
         ids,
       );
 
+      // SET TAXES IN THE RESPECTIVE LIST I.E. MOSTLY KNOWN TAXES
       setTaxes(
         ids,
         mostlyKnownTaxes,
@@ -161,7 +165,7 @@ class HomeStateController extends GetxController {
     update();
   }
 
-  //  INIT METHOD
+  // INIT METHOD
   @override
   void onInit() {
     super.onInit();

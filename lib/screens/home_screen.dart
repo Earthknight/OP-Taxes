@@ -53,6 +53,7 @@ class HomeScreen extends StatelessWidget {
   // FUNCTION TO ROUTE TO TAX DETAIL SCREEN ON USER TAP
   void goToTaxDetailScreen(Tax tax) {
     try {
+      // PASSING THE TAX OBJECT
       Get.to(() => TaxDetailView(
             taxData: tax,
           ));
@@ -100,11 +101,9 @@ class HomeScreen extends StatelessWidget {
                 child: CustomTaxCard.getTaxCard(
                   deviceSize.width,
                   deviceSize.height,
-                  // differentTaxes[index]['country'].toString(),
-                  // differentTaxes[index]['tax_name'].toString(),
-                  differentTaxes[index],
-                  // differentTaxes[index]['color'] as Color,
-                  Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                  differentTaxes[index], // TAX OBJECT
+                  Colors.primaries[Random().nextInt(
+                      Colors.primaries.length)], // GENERATE RANDOM COLORS
                 ),
               );
             },
@@ -216,10 +215,12 @@ class HomeScreen extends StatelessWidget {
                                                 .setEgdeInsetsSymmteric(8, 5),
                                             child: GestureDetector(
                                               onTap: () {
+                                                // SQL QUERY TO GET COUNTRIES FROM TAX NAME
                                                 DBHelper.getCountriesFromTax(
                                                         value.searchedTaxes[
                                                             index]['name'])
                                                     .then((taxValue) {
+                                                  // CREATING THE LIST OF COUNTRIES FROM THE MAP
                                                   List myList = taxValue
                                                       .asMap()
                                                       .entries
@@ -228,14 +229,18 @@ class HomeScreen extends StatelessWidget {
                                                       .toList();
 
                                                   try {
+                                                    // ROUTING TO SEARCH RESULTS SCREEN
                                                     Get.to(
                                                       () => SearchResultTaxType(
+                                                        // TAX NAME
                                                         searchResult: value
                                                             .searchedTaxes[
                                                                 index]['name']
                                                             .toString(),
+                                                        // LIST OF COUNTRIES
                                                         countriesList: myList
                                                             .cast<String>(),
+                                                        // HOME STATE CONTROLLER FOR MANAING THE DATA ON NEXT SCREEN
                                                         taxValue: value,
                                                       ),
                                                     );
