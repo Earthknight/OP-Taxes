@@ -233,6 +233,8 @@ class DBHelper {
     return [];
   }
 
+  /// FUNCTION TO GET THE LIST OF COUNTRIES FROM TAX
+  // BT SELECTING TAX FROM DRAWER
   Future<List<String>> getCountriesList(String selectedTax) async {
     try {
       var results = await getData('taxes');
@@ -253,6 +255,8 @@ class DBHelper {
     return [];
   }
 
+  /// FUNCTION TO GET THE LIST OF TAXES FROM COUNTRY
+  // BY SELECTING COUNTRY FROM DROPDOWN
   Future<List<String>> getTaxesList(String selectedCountry) async {
     try {
       var results = await getData('taxes');
@@ -285,6 +289,26 @@ class DBHelper {
         columns: ['country'],
         where: 'name = ?',
         whereArgs: [taxName],
+      );
+    } on sql.DatabaseException catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    } catch (error) {
+      ErrorAlertBox.getErrorAlertBox(error.toString());
+    }
+    return [];
+  }
+
+  /// FUNCTION TO GET THE DETAILS OF THE TAX FROM ITS NAME AND COUNTRY
+  static Future<List<Map<String, dynamic>>> getTaxDetails(
+      String taxName , String countryName
+      ) async {
+    try {
+      final sqlDB = await DBHelper.database();
+      return sqlDB.query(
+        'taxes',
+        where: 'name = ? and country =?',
+        whereArgs: [taxName, countryName],
+        // limit: 1,
       );
     } on sql.DatabaseException catch (error) {
       ErrorAlertBox.getErrorAlertBox(error.toString());

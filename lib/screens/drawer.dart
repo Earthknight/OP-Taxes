@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:taxes/helpers/db_helper.dart';
 import 'package:taxes/screens/select_country_screen.dart';
 import 'package:taxes/screens/tax_defshort.dart';
@@ -10,6 +12,7 @@ import 'package:taxes/widgets/ListTileWidget.dart';
 import 'package:taxes/widgets/TextWidget.dart';
 import 'package:taxes/widgets/sizedBoxWidget.dart';
 import 'home_screen.dart';
+
 
 List<String> taxList = ["Income Tax", "Capital Gains" ,"Security Transaction Tax", "Prerequisite Tax",
   "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
@@ -40,32 +43,39 @@ class DrawerScreenState extends State<DrawerScreen> {
     return Scaffold(
       appBar: AppBarWidget(),
       drawer: DrawerWidget(context),
-      body: HomeScreen(),
+      body: const HomeScreen(),
     );
   }
 }
 
+/// FUCTION TO GET THE APP BAR
 PreferredSizeWidget AppBarWidget() {
   return PreferredSize(
     preferredSize: const Size.fromHeight(60),
-    child: MyAppBar(
-      text: "OP Taxes",
-      actions: [
-        const MySizedBox(
-          width: 5.0,
-        ),
-        MyIcon(
-          icon: Icons.account_circle_rounded,
-        ),
-        const MySizedBox(
-          width: 5.0,
-        ),
-      ],
-      bgColor: const Color(0xff03541A),
+    child: GestureDetector(
+      child: MyAppBar(
+        text: "OP Taxes",
+        actions: [
+          const MySizedBox(
+            width: 5.0,
+          ),
+          MyIcon(
+            icon: Icons.account_circle_rounded,
+          ),
+          const MySizedBox(
+            width: 5.0,
+          ),
+        ],
+        bgColor: const Color(0xff03541A),
+      ),
+      onTap: (){
+        Get.offAll(() => const DrawerScreen());
+      },
     ),
   );
 }
 
+///FUNCTION TO GET THE DRAWER
 Widget DrawerWidget(BuildContext context) {
 
   return Drawer(
@@ -152,34 +162,34 @@ Widget DrawerWidget(BuildContext context) {
       ));
 }
 
+/// FUNCTION TO NAVIGATE TO THE TAX LIST SCREEN BY SELECTING ABOUT TAXES IN DRAWER
 void moveToTaxTypeScreen(BuildContext context) {
   List<String> taxList = ["Income Tax", "Capital Gains" ,"Security Transaction Tax", "Prerequisite Tax",
     "Cooperate Tax", "GST", "Property Tax", "Professional Tax", "Entertainment Tax",
     "Registration Tax", "Education Cess", "Entry Tax", "Road Tax", "Toll Tax",
     "Custom Duty", "Excise Duty"];
-  Navigator.of(context, rootNavigator: true).push(
-    MaterialPageRoute(builder: (context) => TaxType(taxList: taxList,)),
-  );
+  Get.to(() => TaxType(taxList: taxList));
 }
-void moveToSelectCountryScreen(String? taxName, BuildContext context) async{
 
+/// FUNCTION TO NAVIGATE TO SELECT COUNTRY SCREEN FROM TAXES ACC TO COUNTRY OR CHOOSING ANY TAX FROM DRAWER
+void moveToSelectCountryScreen(String? taxName, BuildContext context) async{
   if(taxName == null){
-    Navigator.of(context, rootNavigator: true).push(
-      MaterialPageRoute(builder: (context) => const SelectCountry()),
-    );
+    Get.to(() => const SelectCountry());
   }
   else{
     var  myCountriesList =  await DBHelper().getCountriesList(taxName);
+    // print("mycountrieslist : $myCountriesList");
     if(myCountriesList.isNotEmpty){
+      // Get.to(() => const  SelectCountry(countriesList: myCountriesList, taxName: taxName,));
       Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(builder: (context) =>  SelectCountry(countriesList: myCountriesList,)),
+        MaterialPageRoute(builder: (context) =>  SelectCountry(countriesList: myCountriesList, taxName: taxName,)),
       );
     }
     else{
-      Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(builder: (context) =>  const SelectCountry(showNothing: true,)),
-      );
+      Get.to(() => const SelectCountry(showNothing: true));
     }
   }
 }
+
+
 
